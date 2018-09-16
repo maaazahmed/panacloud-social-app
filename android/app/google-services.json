@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "678443373199",
+    "firebase_url": "https://cv-project-a9c1b.firebaseio.com",
+    "project_id": "cv-project-a9c1b",
+    "storage_bucket": "cv-project-a9c1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678443373199:android:b3e282145f9432a5",
+        "android_client_info": {
+          "package_name": "com.clintapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678443373199-l6sa2l5upfu557flubq0t582p202qk9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrG_VDCcoOTU-tbeECYW_FFMkJ-VCXqyg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

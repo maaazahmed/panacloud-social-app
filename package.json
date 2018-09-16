@@ -1,0 +1,29 @@
+{
+  "name": "clintApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "native-base": "^2.8.0",
+    "react": "16.3.1",
+    "react-native": "0.55.4",
+    "react-native-firebase": "^4.3.8",
+    "react-navigation": "^2.14.2",
+    "react-navigation-material-bottom-tabs": "^0.4.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-jest": "23.6.0",
+    "babel-preset-react-native": "4.0.1",
+    "jest": "23.6.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
