@@ -1,9 +1,9 @@
 import CreateAccount from "./createAccount/index";
 import VeryfiAccount from "./veryfi/index";
-import Dashboard from "./Dashboard/index"
+import DashboardMain from "./Dashboard/index"
 
 export {
     CreateAccount,
     VeryfiAccount,
-    Dashboard
+    DashboardMain
 }

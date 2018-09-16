@@ -7,21 +7,14 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {
-    Button,
-    Icon,
     Card,
     CardItem,
     Thumbnail,
-    Header,
     Left,
     Body,
     Right,
-    Drawer
+
 } from 'native-base';
-import SideBar from "../../SideBar/index"
-
-
-
 
 
 
@@ -53,22 +46,7 @@ export default class RequestList extends Component {
             )
         }
         return (
-            <Drawer
-                ref={(ref) => { this.drawer = ref; }}
-                onClose={() => this.closeDrawer()}
-                openDrawerOffset={0.4}
-                panCloseMask={0.4}
-                content={<SideBar navigator={this.navigator} />} >
                 <View>
-                    <Header>
-                        <Body>
-                            <TouchableOpacity
-                                onPress={() => this.openDrawer()}
-                                activeOpacity={0.5} >
-                                <Icon name='menu' style={{ color: "#fff" }} />
-                            </TouchableOpacity>
-                        </Body>
-                    </Header>
                     <View style={styles.GroupListContainer} >
                         <FlatList
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
@@ -107,13 +85,9 @@ export default class RequestList extends Component {
                                     </CardItem>
                                 </Card>
                             }
-                            keyExtractor={(item) => { return item.key }}
-                        />
-
+                            keyExtractor={(item) => { return item.key }}/>
                     </View>
                 </View>
-            </Drawer>
-
         );
     }
 }
@@ -139,12 +113,7 @@ const styles = StyleSheet.create({
     },
     ListButn: {
         backgroundColor: "red",
-        // width: "50%",
     },
-
-
-
-
 
     Card: {
         marginBottom: 0,

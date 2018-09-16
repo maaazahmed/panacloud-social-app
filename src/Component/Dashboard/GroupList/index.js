@@ -4,10 +4,8 @@ import {
     Text,
     View,
     FlatList,
-    TouchableOpacity
 } from 'react-native';
-import { Header, List, ListItem, Body, Right, Button, Icon, Drawer, Left } from 'native-base';
-import SideBar from "../../SideBar/index"
+import { List, ListItem, Body, Right, Button, } from 'native-base';
 
 
 export default class GroupList extends Component {
@@ -33,27 +31,10 @@ export default class GroupList extends Component {
         for (var i = 0; i < this.state.count; i++) {
             arr.push(
                 { GroupName: "My Group", }
-
             )
         }
         return (
-            <Drawer
-                ref={(ref) => { this.drawer = ref; }}
-                onClose={() => this.closeDrawer()}
-                openDrawerOffset={0.4}
-                panCloseMask={0.4}
-                content={<SideBar navigator={this.navigator} />} >
                 <View>
-                    <Header >
-                        <Body>
-                            <TouchableOpacity
-                                onPress={() => this.openDrawer()}
-                                activeOpacity={0.5} >
-                                <Icon name='menu'
-                                    style={{ color: "#fff" }} />
-                            </TouchableOpacity>
-                        </Body>
-                    </Header>
                     <View style={styles.GroupListContainer} >
                         <List style={{ marginLeft: 0 }} >
                             <FlatList
@@ -77,7 +58,6 @@ export default class GroupList extends Component {
                         </List>
                     </View>
                 </View>
-            </Drawer>
         );
     }
 }
