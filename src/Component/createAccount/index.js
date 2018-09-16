@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
+import {connect} from "react-redux"
 
 
 

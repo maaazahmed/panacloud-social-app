@@ -6,6 +6,7 @@ import {
     FlatList,
 } from 'react-native';
 import { List, ListItem, Body, Right, Button, } from 'native-base';
+import {connect} from "react-redux"
 
 
 export default class GroupList extends Component {

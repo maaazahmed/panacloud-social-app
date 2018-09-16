@@ -13,8 +13,8 @@ import {
     Left,
     Body,
     Right,
-
 } from 'native-base';
+import {connect} from "react-redux"
 
 
 
