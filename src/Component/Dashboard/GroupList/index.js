@@ -3,9 +3,11 @@ import {
     StyleSheet,
     Text,
     View,
-    FlatList
+    FlatList,
+    TouchableOpacity
 } from 'react-native';
-import { Header, List, ListItem, Body, Right, Button } from 'native-base';
+import { Header, List, ListItem, Body, Right, Button, Icon, Drawer, Left } from 'native-base';
+import SideBar from "../../SideBar/index"
 
 
 export default class GroupList extends Component {
@@ -15,6 +17,17 @@ export default class GroupList extends Component {
             count: 15
         }
     }
+
+
+
+    closeDrawer = () => {
+        this.drawer._root.close()
+    };
+    openDrawer = () => {
+        this.drawer._root.open()
+    };
+
+
     render() {
         let arr = []
         for (var i = 0; i < this.state.count; i++) {
@@ -24,32 +37,47 @@ export default class GroupList extends Component {
             )
         }
         return (
-            <View>
-                <Header />
-                <View style={styles.GroupListContainer} >
-                    <List style={{ marginLeft: 0 }} >
-                        <FlatList
-                            onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                            data={arr}
-                            renderItem={({ item, index }) =>
-                                <ListItem style={styles.ListItem} >
-                                    <Body>
-                                        <Text style={styles.GroupName} >{item.GroupName}</Text>
-                                        <Text note numberOfLines={1}>{index + 1}</Text>
-                                    </Body>
-                                    <Right>
-                                        <Button transparent>
-                                            <Text style={{ color: "green" }} >Join</Text>
-                                        </Button>
-                                    </Right>
-                                </ListItem>
-                            }
-                            keyExtractor={(item) => { return item.key }}
-                        />
-                    </List>
+            <Drawer
+                ref={(ref) => { this.drawer = ref; }}
+                onClose={() => this.closeDrawer()}
+                openDrawerOffset={0.4}
+                panCloseMask={0.4}
+                content={<SideBar navigator={this.navigator} />} >
+                <View>
+                    <Header >
+                        <Body>
+                            <TouchableOpacity
+                                onPress={() => this.openDrawer()}
+                                activeOpacity={0.5} >
+                                <Icon name='menu'
+                                    style={{ color: "#fff" }} />
+                            </TouchableOpacity>
+                        </Body>
+                    </Header>
+                    <View style={styles.GroupListContainer} >
+                        <List style={{ marginLeft: 0 }} >
+                            <FlatList
+                                onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
+                                data={arr}
+                                renderItem={({ item, index }) =>
+                                    <ListItem style={styles.ListItem} >
+                                        <Body>
+                                            <Text style={styles.GroupName} >{item.GroupName}</Text>
+                                            <Text note numberOfLines={1}>{index + 1}</Text>
+                                        </Body>
+                                        <Right>
+                                            <Button transparent>
+                                                <Text style={{ color: "green" }} >Join</Text>
+                                            </Button>
+                                        </Right>
+                                    </ListItem>
+                                }
+                                keyExtractor={(item) => { return item.key }}
+                            />
+                        </List>
+                    </View>
                 </View>
-            </View>
-
+            </Drawer>
         );
     }
 }
