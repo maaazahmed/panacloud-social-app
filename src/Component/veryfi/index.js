@@ -8,11 +8,6 @@ import { connect } from "react-redux";
 
 
 
-
-
-
-
-
 const database = firebase.database().ref('/')
 class VeryfiAccount extends Component {
     constructor() {
@@ -23,11 +18,6 @@ class VeryfiAccount extends Component {
             confirmResult: null
         }
     }
-    
-
-
-    
-
 
     confirmCode() {
         const { confirmCodeNumber } = this.state;

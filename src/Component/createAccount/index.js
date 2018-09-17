@@ -39,25 +39,13 @@ class CreateAccount extends Component {
     if (phoneNumber !== "") {
       AsyncStorage.setItem("phoneNumber",phoneNumber );
       this.props.signInAction(phoneNumber, this.props)
-      // this.props.navigation.navigate("VeryfiAccount")
     }
     else {
       alert("Please Enter Phone number")
     }
   };
 
-  // confirmCode = () => {
-  //   const { codeInput, confirmResult } = this.state;
-  //   if (confirmResult && codeInput.length) {
-  //     confirmResult.confirm(codeInput)
-  //       .then((user) => {
-  //         this.setState({ message: 'Code Confirmed!' });
-  //       })
-  //       .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
-  //   }
-  // };
-
-
+  
   render() {
     return (
       <View style={styles.container} >
