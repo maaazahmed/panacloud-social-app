@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
-import { confirmResultAction } from "../../store/action/action"
+// import { confirmResultAction } from "../../store/action/action"
 import { connect } from "react-redux";
 
 
@@ -133,9 +133,9 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        confirmResultAction: (data, props) => {
-            dispatch(confirmResultAction(data, props))
-        },
+        // confirmResultAction: (data, props) => {
+        //     dispatch(confirmResultAction(data, props))
+        // },
     };
 };
 

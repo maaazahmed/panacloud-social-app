@@ -83,8 +83,7 @@ export default class GroupList extends Component {
                                     </Right>
                                 </ListItem>
                             }
-                            keyExtractor={(item) => { return item.key }}
-                        />
+                            keyExtractor={(item) => { return item.key }} />
                     </List>
                 </View>
                 <View>

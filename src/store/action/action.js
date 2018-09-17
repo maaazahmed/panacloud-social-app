@@ -1,6 +1,9 @@
 import ActionTypes from "../constant/constant"
 import firebase from "react-native-firebase";
 
+
+
+const database = firebase.database().ref("/")
 export const signInAction = (data, props) => {
     return dispatch => {
         firebase.auth().signInWithPhoneNumber(data)
@@ -20,17 +23,17 @@ export const signInAction = (data, props) => {
 
 
 
-export const confirmResultAction = (data, props) => {
+export const groupListAction = (data) => {
     return dispatch => {
-        console.log(data.confirmResult,"==========")
-        // confirmResult.confirm(codeInput)
-        //     .then((user) => {
-        //         console.log(message, 'Code Confirmed!')
-        //         this.props.navigation.navigate("Dashboard")
-        //     })
-        //     .catch((error) => {
-        //         console.log(message, 'Code Confirmed!')
-        //     });
+        database.child("Groups").on("value", (snap)=>{
+            console.log(snap.val(),"=============")
+        })
+
+
+    //    dispatch({
+    //        type:ActionTypes,
+    //        payload:
+    //    })
 
     }
 }
