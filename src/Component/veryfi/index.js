@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
+import { confirmResultAction } from "../../store/action/action"
+import { connect } from "react-redux";
 
 
 
@@ -11,32 +13,38 @@ import firebase from "react-native-firebase"
 
 
 
-
-export default class VeryfiAccount extends Component {
+const database = firebase.database().ref('/')
+class VeryfiAccount extends Component {
     constructor() {
         super()
         this.state = {
-            phoneNumber: "",
-            message: " Enter Veryfication Code"
+            confirmCodeNumber: "",
+            message: " Enter Veryfication Code",
+            confirmResult: null
         }
     }
+    
+
+
+    
 
 
     confirmCode() {
-        // const { codeInput, confirmResult } = this.state;
-        // if (confirmResult && codeInput.length) {
-        //     confirmResult.confirm(codeInput)
-        //         .then((user) => {
-        //             this.setState({ message: 'Code Confirmed!' });
-        //         })
-        //         .catch((error) => {
-        //             this.setState({
-        //                 message: `Code Confirm Error: ${error.message}`
-        //             })
-        //         });
-        // }
-        this.props.navigation.navigate("Dashboard")
+        const { confirmCodeNumber } = this.state;
+        let confirmResult = this.props.confirmResult.confirmResult
 
+        if (confirmCodeNumber.length) {
+            confirmResult.confirm(confirmCodeNumber)
+                .then((user) => {
+                    console.log(user._user, 'Code Confirmed!')
+                    user._user.accountType = "User";
+                    database.child(`user/${user._user.uid}`).set(user._user)
+                    this.props.navigation.navigate("Dashboard")
+                })
+                .catch((error) => {
+                    console.log(error, 'Code Confirmed!')
+                });
+        }
     };
 
 
@@ -52,8 +60,8 @@ export default class VeryfiAccount extends Component {
                     <View style={styles.fomViwe} >
                         <Item>
                             <Input
-                                value={this.state.phoneNumber}
-                                onChangeText={(phoneNumber) => { this.setState({ phoneNumber }) }}
+                                value={this.state.confirmCodeNumber}
+                                onChangeText={(confirmCodeNumber) => { this.setState({ confirmCodeNumber }) }}
                                 placeholderTextColor="#3f51b5"
                                 keyboardType="numeric"
                                 style={styles.TextInnput}
@@ -120,3 +128,23 @@ const styles = StyleSheet.create({
     }
 
 });
+
+
+
+
+
+const mapStateToProp = (state) => {
+    return ({
+        confirmResult: state.root
+    });
+};
+const mapDispatchToProp = (dispatch) => {
+    return {
+        confirmResultAction: (data, props) => {
+            dispatch(confirmResultAction(data, props))
+        },
+    };
+};
+
+
+export default connect(mapStateToProp, mapDispatchToProp)(VeryfiAccount)

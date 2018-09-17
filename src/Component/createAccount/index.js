@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native"
+import { View, StyleSheet, TouchableOpacity, Text, Dimensions, AsyncStorage } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
-import {connect} from "react-redux"
+import { connect } from "react-redux"
+import { signInAction } from "../../store/action/action"
 
 
 
 
-
-
-
-
-
-
-export default class CreateAccount extends Component {
+class CreateAccount extends Component {
 
   constructor() {
     super()
@@ -24,35 +19,43 @@ export default class CreateAccount extends Component {
   }
 
 
+  componentWillMount(){
+    firebase.auth().onAuthStateChanged((user)=>{
+     if(user){
+      this.props.navigation.navigate("Dashboard")
+     }
+    })
+
+    AsyncStorage.getItem("phoneNumber").then((value) => {
+      this.setState({phoneNumber: value});
+      // console.log(value,"")
+  }).done();
+  }
+
+
 
   signIn() {
-    // const { phoneNumber } = this.state;
-    // if (phoneNumber !== "") {
-    //   this.setState({ message: 'Sending code ...' });
-    //   firebase.auth().signInWithPhoneNumber(phoneNumber)
-    //     .then((confirmResult) => {
-    //       console.log(confirmResult)
-    //       this.setState({ confirmResult, message: 'Code has been sent!' })
-
-    //     })
-    //     .catch(error => this.setState({ message: `Sign In With Phone Number Error: ${error.message}` }));
-    // }
-    // else {
-    //   alert("Please Enter Phone number")
-    // }
-    this.props.navigation.navigate("VeryfiAccount")
-  };
-
-  confirmCode = () => {
-    const { codeInput, confirmResult } = this.state;
-    if (confirmResult && codeInput.length) {
-      confirmResult.confirm(codeInput)
-        .then((user) => {
-          this.setState({ message: 'Code Confirmed!' });
-        })
-        .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
+    const { phoneNumber } = this.state;
+    if (phoneNumber !== "") {
+      AsyncStorage.setItem("phoneNumber",phoneNumber );
+      this.props.signInAction(phoneNumber, this.props)
+      // this.props.navigation.navigate("VeryfiAccount")
+    }
+    else {
+      alert("Please Enter Phone number")
     }
   };
+
+  // confirmCode = () => {
+  //   const { codeInput, confirmResult } = this.state;
+  //   if (confirmResult && codeInput.length) {
+  //     confirmResult.confirm(codeInput)
+  //       .then((user) => {
+  //         this.setState({ message: 'Code Confirmed!' });
+  //       })
+  //       .catch(error => this.setState({ message: `Code Confirm Error: ${error.message}` }));
+  //   }
+  // };
 
 
   render() {
@@ -70,7 +73,7 @@ export default class CreateAccount extends Component {
                 value={this.state.phoneNumber}
                 onChangeText={(phoneNumber) => { this.setState({ phoneNumber }) }}
                 placeholderTextColor="#3f51b5"
-                keyboardType="numeric"
+                // keyboardType="numeric"
                 style={styles.TextInnput}
                 placeholder="Phone number" />
             </Item>
@@ -130,8 +133,30 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     elevation: 3
   },
-  TextInnput:{
-    color:"#3f51b5"
+  TextInnput: {
+    color: "#3f51b5"
   }
 
 });
+
+
+
+
+const mapStateToProp = (state) => {
+  return ({
+    catogery_List: state.root,
+  });
+};
+const mapDispatchToProp = (dispatch) => {
+  return {
+    signInAction: (data, props) => {
+      dispatch(signInAction(data, props))
+    },
+  };
+};
+export default connect(mapStateToProp, mapDispatchToProp)(CreateAccount)
+
+
+
+
+

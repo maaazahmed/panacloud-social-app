@@ -4,9 +4,10 @@ import {
     Text,
     View,
     FlatList,
+    TouchableOpacity
 } from 'react-native';
 import { List, ListItem, Body, Right, Button, } from 'native-base';
-import {connect} from "react-redux"
+import { connect } from "react-redux"
 
 
 export default class GroupList extends Component {
@@ -35,30 +36,39 @@ export default class GroupList extends Component {
             )
         }
         return (
-                <View>
-                    <View style={styles.GroupListContainer} >
-                        <List style={{ marginLeft: 0 }} >
-                            <FlatList
-                                onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                                data={arr}
-                                renderItem={({ item, index }) =>
-                                    <ListItem style={styles.ListItem} >
-                                        <Body>
-                                            <Text style={styles.GroupName} >{item.GroupName}</Text>
-                                            <Text note numberOfLines={1}>{index + 1}</Text>
-                                        </Body>
-                                        <Right>
-                                            <Button transparent>
-                                                <Text style={{ color: "green" }} >Join</Text>
-                                            </Button>
-                                        </Right>
-                                    </ListItem>
-                                }
-                                keyExtractor={(item) => { return item.key }}
-                            />
-                        </List>
-                    </View>
+            <View>
+                <View style={styles.GroupListContainer} >
+                    <List style={{ marginLeft: 0 }} >
+                        <FlatList
+                            onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
+                            data={arr}
+                            renderItem={({ item, index }) =>
+                                <ListItem style={styles.ListItem} >
+                                    <Body>
+                                        <Text style={styles.GroupName} >{item.GroupName}</Text>
+                                        <Text note numberOfLines={1}>{index + 1}</Text>
+                                    </Body>
+                                    <Right>
+                                        <Button transparent>
+                                            <Text style={{ color: "green" }} >Join</Text>
+                                        </Button>
+                                    </Right>
+                                </ListItem>
+                            }
+                            keyExtractor={(item) => { return item.key }}
+                        />
+                    </List>
                 </View>
+                <View>
+                    <TouchableOpacity 
+                    activeOpacity={0.7}
+                    style={styles.addButton} >
+                        <Text style={{color:"#fff", fontSize:30}} >
+                            +
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         );
     }
 }
@@ -78,5 +88,20 @@ const styles = StyleSheet.create({
     },
     GroupListContainer: {
         backgroundColor: "#fff"
+    },
+    addButton: {
+        height: 60,
+        width: 60,
+        backgroundColor: "#3f51b5",
+        borderRadius: 100,
+        position: "absolute",
+        bottom: 20, right: 20,
+        elevation: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    addButtonText:{
+
     }
+
 });
