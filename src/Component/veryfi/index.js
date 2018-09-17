@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
-// import { confirmResultAction } from "../../store/action/action"
+import { currentUserAction } from "../../store/action/action"
 import { connect } from "react-redux";
 
 
@@ -22,18 +22,14 @@ class VeryfiAccount extends Component {
     confirmCode() {
         const { confirmCodeNumber } = this.state;
         let confirmResult = this.props.confirmResult.confirmResult
-
         if (confirmCodeNumber.length) {
             confirmResult.confirm(confirmCodeNumber)
                 .then((user) => {
-                    console.log(user._user, 'Code Confirmed!')
                     user._user.accountType = "User";
                     database.child(`user/${user._user.uid}`).set(user._user)
+                    // this.props.currentUserAction()
                     this.props.navigation.navigate("Dashboard")
-                })
-                .catch((error) => {
-                    console.log(error, 'Code Confirmed!')
-                });
+                }).catch((error) => { });
         }
     };
 
@@ -133,9 +129,9 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        // confirmResultAction: (data, props) => {
-        //     dispatch(confirmResultAction(data, props))
-        // },
+        currentUserAction: (data) => {
+            dispatch(currentUserAction(data))
+        },
     };
 };
 

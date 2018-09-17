@@ -8,7 +8,6 @@ export const signInAction = (data, props) => {
     return dispatch => {
         firebase.auth().signInWithPhoneNumber(data)
             .then((confirmResult) => {
-                console.log(confirmResult)
                 props.navigation.navigate("VeryfiAccount")
                 dispatch({
                     type: ActionTypes.CONFERM_RESULT,
@@ -23,18 +22,32 @@ export const signInAction = (data, props) => {
 
 
 
-export const groupListAction = (data) => {
+export const groupListAction = () => {
     return dispatch => {
-        database.child("Groups").on("value", (snap)=>{
-            console.log(snap.val(),"=============")
+        let groupsArr = []
+        database.child("Groups").on("value", (snap) => {
+            let obj = snap.val();
+            for (let key in obj) {
+                groupsArr.push({ ...obj[key], key })
+            }
+            console.log(groupsArr, "=============")
+            dispatch({
+                type: ActionTypes.GROUP_LIST,
+                payload: groupsArr
+            })
         })
-
-
-    //    dispatch({
-    //        type:ActionTypes,
-    //        payload:
-    //    })
-
     }
 }
+
+
+
+export const currentUserAction = (data) => {
+    return dispatch => {
+            dispatch({
+                type: ActionTypes.CURRENT_USER,
+                payload: data
+            })
+        }
+    }
+
 

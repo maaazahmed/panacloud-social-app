@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Dimensions, AsyncStorage } fr
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
 import { connect } from "react-redux"
-import { signInAction } from "../../store/action/action"
+import { signInAction, currentUserAction } from "../../store/action/action"
 
 
 
@@ -19,17 +19,18 @@ class CreateAccount extends Component {
   }
 
 
-  componentWillMount(){
-    firebase.auth().onAuthStateChanged((user)=>{
-     if(user){
-      this.props.navigation.navigate("Dashboard")
-     }
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.navigation.navigate("Dashboard")
+        this.props.currentUserAction(user)
+      }
     })
 
     AsyncStorage.getItem("phoneNumber").then((value) => {
-      this.setState({phoneNumber: value});
+      this.setState({ phoneNumber: value });
       // console.log(value,"")
-  }).done();
+    }).done();
   }
 
 
@@ -37,7 +38,7 @@ class CreateAccount extends Component {
   signIn() {
     const { phoneNumber } = this.state;
     if (phoneNumber !== "") {
-      AsyncStorage.setItem("phoneNumber",phoneNumber );
+      AsyncStorage.setItem("phoneNumber", phoneNumber);
       this.props.signInAction(phoneNumber, this.props)
     }
     else {
@@ -45,7 +46,7 @@ class CreateAccount extends Component {
     }
   };
 
-  
+
   render() {
     return (
       <View style={styles.container} >
@@ -139,6 +140,9 @@ const mapDispatchToProp = (dispatch) => {
   return {
     signInAction: (data, props) => {
       dispatch(signInAction(data, props))
+    },
+    currentUserAction: (data) => {
+      dispatch(currentUserAction(data))
     },
   };
 };

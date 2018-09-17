@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import { List, ListItem, Body, Right, Button, Item, Input, } from 'native-base';
 import { connect } from "react-redux";
-import firebase from "react-native-firebase"
+import firebase from "react-native-firebase";
+import { groupListAction } from "../../../store/action/action"
 
 
 
 const database = firebase.database().ref("/")
-export default class GroupList extends Component {
+class GroupList extends Component {
     constructor() {
         super()
         this.state = {
@@ -51,12 +52,15 @@ export default class GroupList extends Component {
         }
     }
 
-
-
+    componentDidMount() {
+        this.props.groupListAction()
+    }
 
 
 
     render() {
+        let groupList = this.props.groupList.groupList;
+        // console.log(groupList,"-------------")
         let arr = []
         for (var i = 0; i < this.state.count; i++) {
             arr.push(
@@ -64,16 +68,16 @@ export default class GroupList extends Component {
             )
         }
         return (
-            <View>
+            <View style={styles.container} >
                 <View style={styles.GroupListContainer} >
                     <List style={{ marginLeft: 0 }} >
                         <FlatList
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                            data={arr}
+                            data={groupList}
                             renderItem={({ item, index }) =>
-                                <ListItem style={styles.ListItem} >
+                                <ListItem key={index} style={styles.ListItem} >
                                     <Body>
-                                        <Text style={styles.GroupName} >{item.GroupName}</Text>
+                                        <Text style={styles.GroupName} >{item.newGroupVal}</Text>
                                         <Text note numberOfLines={1}>{index + 1}</Text>
                                     </Body>
                                     <Right>
@@ -86,16 +90,7 @@ export default class GroupList extends Component {
                             keyExtractor={(item) => { return item.key }} />
                     </List>
                 </View>
-                <View>
-                    <TouchableOpacity
-                        onPress={() => { this.setState({ dialogVisible: true }) }}
-                        activeOpacity={0.7}
-                        style={styles.addButton} >
-                        <Text style={{ color: "#fff", fontSize: 30 }} >
-                            +
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+
                 <Modal
                     animationType="fade"
                     transparent={true}
@@ -130,6 +125,14 @@ export default class GroupList extends Component {
                         </View>
                     </View>
                 </Modal>
+                    <TouchableOpacity
+                        onPress={() => { this.setState({ dialogVisible: true }) }}
+                        activeOpacity={0.7}
+                        style={styles.addButton} >
+                        <Text style={{ color: "#fff", fontSize: 30 }} >
+                            +
+                        </Text>
+                    </TouchableOpacity>
             </View>
         );
     }
@@ -182,3 +185,18 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 });
+
+
+const mapStateToProp = (state) => {
+    return ({
+        groupList: state.root,
+    });
+};
+const mapDispatchToProp = (dispatch) => {
+    return {
+        groupListAction: () => {
+            dispatch(groupListAction())
+        },
+    };
+};
+export default connect(mapStateToProp, mapDispatchToProp)(GroupList)
