@@ -41,8 +41,11 @@ class VeryfiAccount extends Component {
     render() {
         return (
             <View style={styles.container} >
-                <View style={{}}  >
-                    <Text style={{ fontSize: 22, color: "#3f51b5" }} >
+                <View>
+                    <Text style={{
+                        fontSize: 22,
+                        color: "#3f51b5"
+                    }} >
                         {this.state.message}
                     </Text>
                 </View>

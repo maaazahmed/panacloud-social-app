@@ -4,7 +4,8 @@ import { createBottomTabNavigator } from "react-navigation"
 import { Drawer, Header, Body, Icon } from "native-base"
 import GroupList from "./GroupList/index"
 import RequestList from "./RequestList"
-import SideBar from "../SideBar/index"
+import SideBar from "../SideBar/index";
+import MessagesComponent from "./Messages/index"
 
 
 class DashboardMain extends Component {
@@ -35,7 +36,7 @@ class DashboardMain extends Component {
                         </TouchableOpacity>
                     </Body>
                 </Header>
-                <View style={{flex:1}} >
+                <View style={{ flex: 1 }} >
                     <Dashboard />
                 </View>
             </Drawer>
@@ -45,8 +46,9 @@ class DashboardMain extends Component {
 
 
 const Dashboard = createBottomTabNavigator({
+    Messages: { screen: MessagesComponent },
     Group: { screen: GroupList },
-    RequestList: { screen: RequestList },
+    Invitations: { screen: RequestList },
 },
     {
         tabBarOptions: {
@@ -60,7 +62,7 @@ const Dashboard = createBottomTabNavigator({
                 fontSize: 18,
                 alignContent: "flex-start",
                 paddingBottom: 10
-            }
+            },
         }
     }
 )

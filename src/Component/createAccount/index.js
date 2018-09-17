@@ -61,7 +61,7 @@ class CreateAccount extends Component {
                 value={this.state.phoneNumber}
                 onChangeText={(phoneNumber) => { this.setState({ phoneNumber }) }}
                 placeholderTextColor="#3f51b5"
-                // keyboardType="numeric"
+                keyboardType="phone-pad"
                 style={styles.TextInnput}
                 placeholder="Phone number" />
             </Item>
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     color: "#fff",
-    fontSize: 17,
+    fontSize: 15,
   },
   sendButton: {
     backgroundColor: "#3f51b5",
-    width: "30%",
+    width: 60,
     justifyContent: "center",
     alignItems: "center",
-    height: "45%",
+    height: 40,
     borderRadius: 3,
     elevation: 3
   },

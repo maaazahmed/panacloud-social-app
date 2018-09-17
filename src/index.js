@@ -7,20 +7,20 @@ import store from "./store/index"
 
 const Route = StackNavigator(
     {
+        Dashboard: {
+            screen: DashboardMain
+        },
         CreateAccount: {
             screen: CreateAccount
         },
         VeryfiAccount: {
             screen: VeryfiAccount
         },
-        Dashboard: {
-            screen: DashboardMain
-        },
     },
     {
         navigationOptions: {
             header: null
-        }
+        },
     })
 
 
