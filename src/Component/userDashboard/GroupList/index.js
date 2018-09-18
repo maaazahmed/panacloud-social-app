@@ -60,26 +60,14 @@ class GroupList extends Component {
     }
 
 
-    ViewGroup(groupData) {
-        database.child("message").orderByChild('timestamp').on("value", (snap) => {
-            let messOBJ = snap.val()
-            
-            let messageArr = []
-            for (let key in messOBJ) {
-                if (messOBJ[key].groupID === this.props.groupMessages.ViewGroup.key)
-                    messageArr.push({ ...messOBJ[key], key })
-            }
-            let newMessageArr = messageArr
-            this.props.messageAction(newMessageArr)
-        })
-
-
-        this.props.viewGroupAction(groupData)
-        this.setState({
-            dialogVisible2: true
-        })
-
-
+    joinGroup(groupData) {
+        let currentUser = this.props.currentUser.currentUser
+        console.log(groupData,"============")
+        let joinObj = {
+            currentUser,
+            groupData
+        }
+        database.child("invitations").push(joinObj)
     }
 
 
@@ -96,7 +84,7 @@ class GroupList extends Component {
         if (messageObj.message !== "") {
             database.child("message").push(messageObj)
             this.setState({
-                messageVal:""
+                messageVal: ""
             })
         }
         else {
@@ -123,8 +111,8 @@ class GroupList extends Component {
                                         <Text note numberOfLines={1}>{index + 1}</Text>
                                     </Body>
                                     <Right>
-                                        <Button onPress={this.ViewGroup.bind(this, item)} transparent>
-                                            <Text style={{ color: "green" }} >View</Text>
+                                        <Button onPress={this.joinGroup.bind(this, item)} transparent>
+                                            <Text style={{ color: "#3f51b5" }} >JOIN</Text>
                                         </Button>
                                     </Right>
                                 </ListItem>
@@ -196,9 +184,7 @@ class GroupList extends Component {
                                 </Button>
                             </View>
                         </View>
-
                     </View>
-
                 </Modal>
 
 

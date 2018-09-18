@@ -19,15 +19,18 @@ class CreateAccount extends Component {
 
 
 
-  componentWillMount() {
+  componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         database.child(`user/${user._user.uid}`).on("value", (snap) => {
           let currentUser = snap.val()
-         
-          if(currentUser.accountType === "User"){
+          if (currentUser.accountType === "User") {
             this.props.navigation.navigate("UserDashboardMain")
           }
+          else if (currentUser.accountType === "admin") {
+            this.props.navigation.navigate("Dashboard")
+          }
+          console.log(currentUser)
           this.props.currentUserAction(currentUser)
         })
 
@@ -158,3 +161,4 @@ export default connect(mapStateToProp, mapDispatchToProp)(CreateAccount)
 
 
 
+// 92 317267958
