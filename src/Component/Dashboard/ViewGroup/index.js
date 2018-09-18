@@ -13,22 +13,22 @@ import {
     Left,
     Body,
     Right,
+    Header,
+    Icon
 } from 'native-base';
 import { connect } from "react-redux"
-import firebase from "react-native-firebase";
-import { requestList } from "../../../store/action/action"
 
 
 
-const database = firebase.database().ref("/")
 
-class RequestList extends Component {
+ class ViewGroup extends Component {
     constructor() {
         super()
         this.state = {
             count: 15
         }
     }
+
 
 
     closeDrawer = () => {
@@ -38,37 +38,28 @@ class RequestList extends Component {
         this.drawer._root.open()
     };
 
-    componentWillMount() {
-        database.child("invitations").on("value", (snap) => {
-            let obj = snap.val()
-            let requestListArr = []
-            for (let key in obj) {
-                requestListArr.push({ ...obj[key], key })
-            }
-            this.props.requestList(requestListArr)
-        })
-    }
 
-
-    apprroveRequest(data) {
-        database.child(`Groups/${data.groupData.key}/members`).push(data.currentUserData)
-        
-    }
     render() {
-        let request_list = this.props.request_list.requestList;
+        console.log(this.props.ViewGroupData.ViewGroup)
+        let arr = []
         return (
             <View>
                 <View style={styles.GroupListContainer} >
-                    <FlatList
+                <Header>
+                    <Right>
+                        <Icon name="arrow-back" style={{color:"#fff"}} />
+                    </Right>
+                </Header>
+                    {/* <FlatList
                         onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                        data={request_list}
+                        data={arr}
                         renderItem={({ item, index }) =>
                             <Card key={index} style={styles.Card}>
                                 <CardItem>
                                     <Left>
                                         <Thumbnail source={{ uri: "https://scontent.fkhi4-1.fna.fbcdn.net/v/t1.0-9/22279707_282900065546139_3654734220274300235_n.jpg?_nc_cat=0&_nc_eui2=AeHRdlM8eqDcyXmtWKac6uJUh8LA5ViKlAMp9dWzSSuc7Y8KO6GMgjjKiqR_Gojei24gRRZcq8TTWxqbFjmVGucO2bwtzjEegT2RH5IJSpAMl43qsJPq-u3o65hZI3-Smpk&oh=57a8afb496dcfcca9e8f13ec36bed700&oe=5C2CA1EA" }} />
                                         <Body>
-                                            <Text>{item.currentUserData.phoneNumber}</Text>
+                                            <Text>{item.GroupName}</Text>
                                             <Text note>People</Text>
                                         </Body>
                                     </Left>
@@ -76,19 +67,19 @@ class RequestList extends Component {
                                         <Body>
                                             <View style={styles.CardButtun} >
                                                 <TouchableOpacity
+
                                                     activeOpacity={0.8} style={styles.rejectButt}>
                                                     <Text style={styles.rejectText}>
                                                         Reject
-                                                    </Text>
+                                                </Text>
                                                 </TouchableOpacity>
-
                                                 <TouchableOpacity
+
                                                     activeOpacity={0.8}
-                                                    onPress={this.apprroveRequest.bind(this, item, index)}
                                                     style={styles.aprovButt} >
                                                     <Text style={styles.aprovText} >
                                                         Approve
-                                                    </Text>
+                                         </Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </Body>
@@ -96,7 +87,7 @@ class RequestList extends Component {
                                 </CardItem>
                             </Card>
                         }
-                        keyExtractor={(item) => { return item.key }} />
+                        keyExtractor={(item) => { return item.key }} /> */}
                 </View>
             </View>
         );
@@ -168,19 +159,18 @@ const styles = StyleSheet.create({
 
 
 
+
+
 const mapStateToProp = (state) => {
     return ({
-        request_list: state.root,
-        currentUser:state.root
+        ViewGroupData: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        requestList: (data) => {
-            dispatch(requestList(data))
-        },
+        // categoryData: (data) => {
+        //     dispatch(categoryData(data))
+        // },
     };
 };
-
-
-export default connect(mapStateToProp, mapDispatchToProp)(RequestList)
+export default connect(mapStateToProp, mapDispatchToProp)(ViewGroup)

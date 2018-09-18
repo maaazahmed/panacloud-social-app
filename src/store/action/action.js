@@ -43,11 +43,45 @@ export const groupListAction = () => {
 
 export const currentUserAction = (data) => {
     return dispatch => {
-            dispatch({
-                type: ActionTypes.CURRENT_USER,
-                payload: data
-            })
-        }
+        dispatch({
+            type: ActionTypes.CURRENT_USER,
+            payload: data
+        })
     }
+}
 
+
+
+export const requestList = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.REQUEST_LIST,
+            payload: data,
+        })
+    }
+}
+
+
+
+
+
+export const viewGroupAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.VIEW_GROUP,
+            payload: data,
+        })
+    }
+}
+
+
+
+export const messageAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MESSAGE_LIST,
+            payload: data,
+        })
+    }
+}
 

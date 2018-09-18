@@ -1,7 +1,6 @@
 import React, { Component } from "react"
-import { View, Text, StyleSheet, Image } from "react-native"
-
-
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native"
+import firebase from "react-native-firebase"
 
 
 class SideBar extends Component {
@@ -9,10 +8,21 @@ class SideBar extends Component {
         return (
             <View style={styles.container} >
                 <View style={styles.content_1} >
-                    <Image style={styles.ImageStyle} source={{ uri: "https://avatars2.githubusercontent.com/u/31310451?s=460&v=4" }} />
+                    <Image style={styles.ImageStyle}
+                     source={{ uri: "https://avatars2.githubusercontent.com/u/31310451?s=460&v=4" }} />
                     <Text style={styles.usernameStyle} >Maaz Ahmed</Text>
                 </View>
-                <View style={styles.content_2} ></View>
+                <View style={styles.content_2} >
+                    <TouchableOpacity
+                     onPress={() => {
+                        firebase.auth().signOut().then(() => {
+                            this.props.navigation.navigate("CreateAccount")
+                        }) }}>
+                        <Text style={{ fontSize: 20, fontWeight: "bold" }} >
+                            SIGN OUT
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -32,7 +42,9 @@ const styles = StyleSheet.create({
     },
     content_2: {
         backgroundColor: "#fff",
-        flex: 2
+        flex: 2,
+        justifyContent: "center",
+        alignItems: "center"
     },
     ImageStyle: {
         height: 120,
@@ -42,11 +54,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
 
     },
-    usernameStyle:{
-        color:"#fff",
-        fontSize:20,
-        fontWeight:"bold",
-        margin:10
+    usernameStyle: {
+        color: "#fff",
+        fontSize: 20,
+        fontWeight: "bold",
+        margin: 10
     }
 })
 

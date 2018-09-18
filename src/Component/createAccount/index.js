@@ -6,7 +6,7 @@ import { connect } from "react-redux"
 import { signInAction, currentUserAction } from "../../store/action/action"
 
 
-
+const database = firebase.database().ref("/")
 
 class CreateAccount extends Component {
 
@@ -19,11 +19,18 @@ class CreateAccount extends Component {
   }
 
 
+
+
   componentWillMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        database.child(`user/${user._user.uid}`).on("value", (snap) => {
+          let currentUser = snap.val()
+          console.log(currentUser, "================== create accout")
+          this.props.currentUserAction(currentUser)
+        })
         this.props.navigation.navigate("Dashboard")
-        this.props.currentUserAction(user)
+
       }
     })
 
