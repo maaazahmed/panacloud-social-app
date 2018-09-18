@@ -14,7 +14,7 @@ import { connect } from "react-redux"
 const database = firebase.database().ref("/")
 
 
-class DashboardMain extends Component {
+class UserDashboardMain extends Component {
 constructor(){
     super()
     this.state = {
@@ -61,7 +61,7 @@ constructor(){
 const Dashboard = createBottomTabNavigator({
     Messages: { screen: MessagesComponent },
     Group: { screen: GroupList },
-    Invitations: { screen: RequestList },
+    // Invitations: { screen: RequestList },
 },
     {
         tabBarOptions: {
@@ -96,4 +96,4 @@ const mapDispatchToProp = (dispatch) => {
 };
 
 
-export default connect(mapStateToProp, mapDispatchToProp)(DashboardMain)
+export default connect(mapStateToProp, mapDispatchToProp)(UserDashboardMain)

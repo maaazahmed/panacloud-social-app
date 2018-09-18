@@ -9,7 +9,6 @@ const INITIAL_STATE = {
     messages: [],
     Allmessages: []
 }
-// ALL_MESSAGE
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {

@@ -7,9 +7,7 @@ import { signInAction, currentUserAction } from "../../store/action/action"
 
 
 const database = firebase.database().ref("/")
-
 class CreateAccount extends Component {
-
   constructor() {
     super()
     this.state = {
@@ -26,17 +24,18 @@ class CreateAccount extends Component {
       if (user) {
         database.child(`user/${user._user.uid}`).on("value", (snap) => {
           let currentUser = snap.val()
-          console.log(currentUser, "================== create accout")
+         
+          if(currentUser.accountType === "User"){
+            this.props.navigation.navigate("UserDashboardMain")
+          }
           this.props.currentUserAction(currentUser)
         })
-        this.props.navigation.navigate("Dashboard")
 
       }
     })
 
     AsyncStorage.getItem("phoneNumber").then((value) => {
       this.setState({ phoneNumber: value });
-      // console.log(value,"")
     }).done();
   }
 

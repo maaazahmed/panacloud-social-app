@@ -30,7 +30,6 @@ export const groupListAction = () => {
             for (let key in obj) {
                 groupsArr.push({ ...obj[key], key })
             }
-            console.log(groupsArr, "=============")
             dispatch({
                 type: ActionTypes.GROUP_LIST,
                 payload: groupsArr
@@ -87,7 +86,6 @@ export const messageAction = (data) => {
 
 
 export const AllMessagesAction = (data) => {
-    console.log(data,"0999999999999999999")
     return dispatch => {
         dispatch({
             type: ActionTypes.ALL_MESSAGE,

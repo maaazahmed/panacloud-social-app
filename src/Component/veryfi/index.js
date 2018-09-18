@@ -25,16 +25,17 @@ class VeryfiAccount extends Component {
         if (confirmCodeNumber.length) {
             confirmResult.confirm(confirmCodeNumber)
                 .then((user) => {
+                    console.log(user, "")
                     user._user.accountType = "User";
                     database.child(`user/${user._user.uid}`).set(user._user).then(() => {
-                        database.child(`user/${this.props.currentUserData.currentUser._user.uid}`).on("value", (snap) => {
+                        database.child(`user/${user._user.uid}`).on("value", (snap) => {
                             let currentUser = snap.val()
                             this.props.currentUserAction(currentUser)
                             this.props.navigation.navigate("Dashboard")
                         })
                     })
-                }).catch((error) => { 
-                    
+                }).catch((error) => {
+                    console.log(error)
                 });
         }
     };
