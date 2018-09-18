@@ -6,8 +6,10 @@ const INITIAL_STATE = {
     currentUser: {},
     requestList: [],
     ViewGroup: {},
-    messages: []
+    messages: [],
+    Allmessages: []
 }
+// ALL_MESSAGE
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -40,6 +42,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 messages: action.payload
+            })
+        case ActionTypes.ALL_MESSAGE:
+            return ({
+                ...state,
+                Allmessages: action.payload
             })
         default:
             return state;

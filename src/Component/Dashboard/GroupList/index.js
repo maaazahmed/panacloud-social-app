@@ -61,14 +61,16 @@ class GroupList extends Component {
 
 
     ViewGroup(groupData) {
-        database.child("message").on("value", (snap) => {
+        database.child("message").orderByChild('timestamp').on("value", (snap) => {
             let messOBJ = snap.val()
+            
             let messageArr = []
             for (let key in messOBJ) {
                 if (messOBJ[key].groupID === this.props.groupMessages.ViewGroup.key)
                     messageArr.push({ ...messOBJ[key], key })
             }
-            this.props.messageAction(messageArr)
+            let newMessageArr = messageArr
+            this.props.messageAction(newMessageArr)
         })
 
 
@@ -89,8 +91,17 @@ class GroupList extends Component {
             message: this.state.messageVal,
             groupNaem: this.props.groupMessages.ViewGroup.newGroupVal,
             currentUserID: this.props.currentUser.currentUser.uid,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
         }
-        database.child("message").push(messageObj)
+        if (messageObj.message !== "") {
+            database.child("message").push(messageObj)
+            this.setState({
+                messageVal:""
+            })
+        }
+        else {
+            alert("Please write")
+        }
     }
 
 
@@ -101,7 +112,7 @@ class GroupList extends Component {
         return (
             <View style={styles.container} >
                 <View style={styles.GroupListContainer} >
-                    <List style={{ marginLeft: 0 }} >
+                    <List style={{ marginLeft: 0, backgroundColor: "#fff" }} >
                         <FlatList
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
                             data={groupList}
@@ -121,7 +132,6 @@ class GroupList extends Component {
                             keyExtractor={(item) => { return item.key }} />
                     </List>
                 </View>
-
                 <Modal
                     animationType="fade"
                     transparent={true}
@@ -137,7 +147,6 @@ class GroupList extends Component {
                         </Header>
                         <View style={{ backgroundColor: "#f2f2f2", flex: 10 }} >
                             <FlatList
-                                style={{ backgroundColor: "green", }}
                                 data={messages_list}
                                 renderItem={({ item, index }) =>
                                     (this.props.currentUser.currentUser.uid === item.currentUserID) ?
@@ -166,12 +175,12 @@ class GroupList extends Component {
                         </View>
 
                         <View style={{
-                            // minHeight: "10%",
+
                             flex: 1,
                             backgroundColor: "#3f51b5",
                             flexDirection: "row", justifyContent: "space-between",
                             alignItems: "center",
-                            padding:2
+                            padding: 2
                         }} >
                             <View style={{ flex: 6 }} >
                                 <Item>

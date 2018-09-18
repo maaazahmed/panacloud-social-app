@@ -85,3 +85,16 @@ export const messageAction = (data) => {
     }
 }
 
+
+export const AllMessagesAction = (data) => {
+    console.log(data,"0999999999999999999")
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ALL_MESSAGE,
+            payload: data,
+        })
+    }
+}
+
+
+

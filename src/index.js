@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux"
-import { CreateAccount, VeryfiAccount, DashboardMain, ViewGroup } from "./Component/index";
+import { CreateAccount, VeryfiAccount, DashboardMain } from "./Component/index";
 import { StackNavigator } from "react-navigation"
 import store from "./store/index"
 
@@ -15,9 +15,6 @@ const Route = StackNavigator(
         },
         VeryfiAccount: {
             screen: VeryfiAccount
-        },
-        ViewGroup: {
-            screen: ViewGroup
         },
     },
     {

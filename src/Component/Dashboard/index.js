@@ -5,7 +5,7 @@ import { Drawer, Header, Body, Icon } from "native-base"
 import GroupList from "./GroupList/index"
 import RequestList from "./RequestList"
 import SideBar from "../SideBar/index";
-import MessagesComponent from "./Messages/index"
+import MessagesComponent from "./AllMesseges/index"
 import firebase from "react-native-firebase";
 import { connect } from "react-redux"
 
