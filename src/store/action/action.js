@@ -22,7 +22,7 @@ export const signInAction = (data, props) => {
 
 
 
-export const groupListAction = () => {
+export const groupListAction = (data) => {
     return dispatch => {
         let groupsArr = []
         database.child("Groups").on("value", (snap) => {

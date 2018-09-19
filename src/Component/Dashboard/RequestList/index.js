@@ -51,9 +51,11 @@ class RequestList extends Component {
 
 
     apprroveRequest(data) {
-        database.child(`Groups/${data.groupData.key}/members`).push(data.currentUserData)
-
+        database.child(`Groups/${data.groupData.key}/members`).push(data.currentUser)
     }
+
+
+
     render() {
         let request_list = this.props.request_list.requestList;
         return (
@@ -63,7 +65,6 @@ class RequestList extends Component {
                         onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
                         data={request_list}
                         renderItem={({ item, index }) =>
-                        
                             <Card key={index} style={styles.Card}>
                                 <CardItem>
                                     <Left>
@@ -97,9 +98,10 @@ class RequestList extends Component {
                                 </CardItem>
                             </Card>
                         }
-                        keyExtractor={(item) => { 
+                        keyExtractor={(item) => {
                             console.log(item)
-                            return item.key }} />
+                            return item.key
+                        }} />
                 </View>
             </View>
         );

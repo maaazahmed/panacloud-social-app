@@ -56,18 +56,20 @@ class GroupList extends Component {
     }
 
     componentDidMount() {
-        this.props.groupListAction()
+        this.props.groupListAction(this.props.currentUser.currentUser)
+        console.log(this.props.currentUser.currentUser,"00000000000")
     }
 
 
     joinGroup(groupData) {
         let currentUser = this.props.currentUser.currentUser
+        groupData.idAdd = false;
         console.log(groupData,"============")
         let joinObj = {
             currentUser,
-            groupData
+            groupData,
         }
-        database.child("invitations").push(joinObj)
+        database.child(`invitations`).push(joinObj)
     }
 
 
@@ -117,7 +119,9 @@ class GroupList extends Component {
                                     </Right>
                                 </ListItem>
                             }
-                            keyExtractor={(item) => { return item.key }} />
+                            keyExtractor={(item) => { 
+
+                                return item.key }} />
                     </List>
                 </View>
                 <Modal
@@ -299,8 +303,8 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        groupListAction: () => {
-            dispatch(groupListAction())
+        groupListAction: (data) => {
+            dispatch(groupListAction(data))
         },
         viewGroupAction: (data) => {
             dispatch(viewGroupAction(data))

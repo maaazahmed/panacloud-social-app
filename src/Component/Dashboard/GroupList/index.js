@@ -56,7 +56,9 @@ class GroupList extends Component {
     }
 
     componentDidMount() {
-        this.props.groupListAction()
+        this.props.groupListAction(thdatais.props.currentUser.currentUser)
+        console.log(this.props.currentUser.currentUser,"00000000000")
+
     }
 
 
@@ -320,8 +322,8 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        groupListAction: () => {
-            dispatch(groupListAction())
+        groupListAction: (data) => {
+            dispatch(groupListAction(data))
         },
         viewGroupAction: (data) => {
             dispatch(viewGroupAction(data))
