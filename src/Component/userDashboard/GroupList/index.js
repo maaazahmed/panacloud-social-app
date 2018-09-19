@@ -11,8 +11,7 @@ import {
 import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left } from 'native-base';
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
-import { groupListAction, viewGroupAction, messageAction } from "../../../store/action/action";
-
+import { groupListAction, viewGroupAction, messageAction, requestList } from "../../../store/action/action";
 
 
 const database = firebase.database().ref("/")
@@ -25,6 +24,7 @@ class GroupList extends Component {
             dialogVisible2: false,
             messageVal: "",
             isInputError: false,
+            isJoin:"Joine"
 
         }
     }
@@ -56,25 +56,33 @@ class GroupList extends Component {
     }
 
     componentDidMount() {
-        this.props.groupListAction(this.props.currentUser.currentUser)
-        console.log(this.props.currentUser.currentUser,"00000000000")
+        database.child("Groups").on("value", (snap) => {
+            let groupsArr = []
+            let obj = snap.val();
+            for (let key in obj) {
+                groupsArr.push({ ...obj[key], key })
+            }
+            this.props.groupListAction(groupsArr, this.props.currentUser.currentUser)
+        })
+
+      
     }
-
-
     joinGroup(groupData) {
         let currentUser = this.props.currentUser.currentUser
         groupData.idAdd = false;
-        console.log(groupData,"============")
         let joinObj = {
             currentUser,
             groupData,
         }
-        database.child(`invitations`).push(joinObj)
+        database.child(`invitations`).push(joinObj).then(()=>{
+          this.setState({
+        })
+        alert("Request submit")
+        })
     }
 
 
     sendMessage() {
-        this.props.currentUser.currentUser.phoneNumber
         let messageObj = {
             groupID: this.props.groupMessages.ViewGroup.key,
             phoneNumber: this.props.currentUser.currentUser.phoneNumber,
@@ -96,9 +104,35 @@ class GroupList extends Component {
 
 
 
+    
+    ViewGroup(groupData) {
+        database.child("message").orderByChild('timestamp').on("value", (snap) => {
+            let messOBJ = snap.val()
+            let messageArr = []
+            for (let key in messOBJ) {
+                if (messOBJ[key].groupID === this.props.groupMessages.ViewGroup.key)
+                    messageArr.push({ ...messOBJ[key], key })
+            }
+            let newMessageArr = messageArr
+            this.props.messageAction(newMessageArr)
+        })
+        this.props.viewGroupAction(groupData)
+        this.setState({
+            dialogVisible2: true
+        })
+    }
+
+
+
     render() {
+        
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
+        let joinGroup = this.props.currentUser.currentUser.JoinedGroups
+        let joinGroupArr = []
+        for (let key in joinGroup) {
+            joinGroupArr.push({ ...joinGroup[key], key })
+        }
         return (
             <View style={styles.container} >
                 <View style={styles.GroupListContainer} >
@@ -113,15 +147,20 @@ class GroupList extends Component {
                                         <Text note numberOfLines={1}>{index + 1}</Text>
                                     </Body>
                                     <Right>
-                                        <Button onPress={this.joinGroup.bind(this, item)} transparent>
-                                            <Text style={{ color: "#3f51b5" }} >JOIN</Text>
-                                        </Button>
+                                        {joinGroupArr.find(e => e.groupID === item.key)
+                                            ? <Button onPress={this.ViewGroup.bind(this, item)} transparent>
+                                                <Text style={{ color: "#3f51b5" }} >View</Text>
+                                            </Button>
+                                            : <Button onPress={this.joinGroup.bind(this, item)} transparent>
+                                                <Text style={{ color: "#3f51b5" }} >{this.state.isJoin}</Text>
+                                            </Button>
+                                        }
                                     </Right>
                                 </ListItem>
                             }
-                            keyExtractor={(item) => { 
-
-                                return item.key }} />
+                            keyExtractor={(item) => {
+                                return item.key
+                            }} />
                     </List>
                 </View>
                 <Modal
@@ -298,7 +337,8 @@ const mapStateToProp = (state) => {
         groupList: state.root,
         currentUser: state.root,
         groupMessages: state.root,
-        messages_list: state.root
+        messages_list: state.root,
+        invitations:state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
@@ -312,6 +352,10 @@ const mapDispatchToProp = (dispatch) => {
         messageAction: (data) => {
             dispatch(messageAction(data))
         },
+        requestList:(data) => {
+            dispatch(requestList(data))
+        },
+
     };
 };
 export default connect(mapStateToProp, mapDispatchToProp)(GroupList)

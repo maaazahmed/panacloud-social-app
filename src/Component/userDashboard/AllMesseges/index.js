@@ -53,27 +53,43 @@ class MessagesComponent extends Component {
 
     render() {
         let Allmessages = this.props.Allmessages.Allmessages
+        let JoinedGroups = this.props.currentUser.currentUser.JoinedGroups
+        let JoinedGroupsArr = []
+        for (let key in JoinedGroups) {
+            JoinedGroupsArr.push({ ...JoinedGroups[key], key })
+        }
+        console.log(JoinedGroupsArr, "'''''''''''''''''''''")
+
+
         return (
             <View style={styles.container} >
                 <FlatList
                     style={{ backgroundColor: "#f2f2f2" }}
                     data={Allmessages}
-                    renderItem={({ item, index }) =>
-                        <View key={index} style={{
-                            backgroundColor: "#fff",
-                            width: "100%",
-                            minHeight: 100,
-                            marginBottom: 1,
-                            elevation: 5
-                        }}>
-                            <View style={{ padding: 5, flexDirection: "row", justifyContent: "space-between", flex: 1 }} >
-                                <Text style={{ fontSize: 15, color: "#3f51b5", fontWeight: "600" }}>{item.groupNaem}</Text>
-                                <Text style={{ color: "#3f51b5" }}>{item.phoneNumber}</Text>
-                            </View>
-                            <View style={{ padding: 5, flexDirection: "row", justifyContent: "space-between", flex: 2, alignItems: "center" }} >
-                                <Text style={{ color: "#3f51b5" }}>{item.message}</Text>
-                            </View>
-                        </View>
+                    renderItem={({ item, index }) => {
+                        for (let key in JoinedGroups) {
+                            console.log(JoinedGroups[key].groupID === item.groupID)
+                            if (JoinedGroups[key].groupID === item.groupID) {
+                             return(
+                                <View key={index} style={{
+                                    backgroundColor: "#fff",
+                                    width: "100%",
+                                    minHeight: 100,
+                                    marginBottom: 1,
+                                    elevation: 5
+                                }}>
+                                    <View style={{ padding: 5, flexDirection: "row", justifyContent: "space-between", flex: 1 }} >
+                                        <Text style={{ fontSize: 15, color: "#3f51b5", fontWeight: "600" }}>{item.groupNaem}</Text>
+                                        <Text style={{ color: "#3f51b5" }}>{item.phoneNumber}</Text>
+                                    </View>
+                                    <View style={{ padding: 5, flexDirection: "row", justifyContent: "space-between", flex: 2, alignItems: "center" }} >
+                                        <Text style={{ color: "#3f51b5" }}>{item.message}</Text>
+                                    </View>
+                                </View>
+                                )
+                            }
+                        }
+                    }
                     } keyExtractor={(item) => { return item.key }} />
             </View>
         );
@@ -149,6 +165,7 @@ const styles = StyleSheet.create({
 const mapStateToProp = (state) => {
     return ({
         Allmessages: state.root,
+        currentUser: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {

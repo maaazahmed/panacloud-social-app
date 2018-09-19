@@ -24,17 +24,17 @@ export const signInAction = (data, props) => {
 
 export const groupListAction = (data) => {
     return dispatch => {
-        let groupsArr = []
-        database.child("Groups").on("value", (snap) => {
-            let obj = snap.val();
-            for (let key in obj) {
-                groupsArr.push({ ...obj[key], key })
-            }
+        // database.child("Groups").on("value", (snap) => {
+        //     let groupsArr = []
+        //     let obj = snap.val();
+        //     for (let key in obj) {
+        //         groupsArr.push({ ...obj[key], key })
+        //     }
             dispatch({
                 type: ActionTypes.GROUP_LIST,
-                payload: groupsArr
+                payload: data
             })
-        })
+        // })
     }
 }
 

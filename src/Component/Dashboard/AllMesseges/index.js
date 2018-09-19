@@ -53,6 +53,7 @@ class MessagesComponent extends Component {
 
     render() {
         let Allmessages = this.props.Allmessages.Allmessages
+        console.log(Allmessages, this.props.currentUser,"[[[[[[[[[[[[[[[[[[[[")
         return (
             <View style={styles.container} >
                 <FlatList
@@ -149,6 +150,7 @@ const styles = StyleSheet.create({
 const mapStateToProp = (state) => {
     return ({
         Allmessages: state.root,
+        currentUser:state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {

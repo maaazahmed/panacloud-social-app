@@ -39,6 +39,7 @@ class GroupList extends Component {
         let { newGroupVal } = this.state;
         let groupObj = {
             newGroupVal,
+            isJoin:"JOIN"
         }
         if (newGroupVal !== "") {
             this.setState({
@@ -56,9 +57,14 @@ class GroupList extends Component {
     }
 
     componentDidMount() {
-        this.props.groupListAction(thdatais.props.currentUser.currentUser)
-        console.log(this.props.currentUser.currentUser,"00000000000")
-
+        database.child("Groups").on("value", (snap) => {
+            let groupsArr = []
+            let obj = snap.val();
+            for (let key in obj) {
+                groupsArr.push({ ...obj[key], key })
+            }
+            this.props.groupListAction(groupsArr,this.props.currentUser.currentUser)
+        })
     }
 
 
@@ -93,7 +99,8 @@ class GroupList extends Component {
             message: this.state.messageVal,
             groupNaem: this.props.groupMessages.ViewGroup.newGroupVal,
             currentUserID: this.props.currentUser.currentUser.uid,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+           
         }
         if (messageObj.message !== "") {
             database.child("message").push(messageObj)
@@ -322,8 +329,8 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        groupListAction: (data) => {
-            dispatch(groupListAction(data))
+        groupListAction: (data, currentUser) => {
+            dispatch(groupListAction(data, currentUser))
         },
         viewGroupAction: (data) => {
             dispatch(viewGroupAction(data))

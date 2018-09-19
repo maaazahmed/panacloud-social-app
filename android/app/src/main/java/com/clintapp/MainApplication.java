@@ -10,6 +10,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // <-- Add this line
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.functions.RNFirebaseFunctionsPackage;
 
 
 import java.util.Arrays;
@@ -29,7 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(), // <-- Add this line
-            new RNFirebaseDatabasePackage() // <-- Add this line
+            new RNFirebaseDatabasePackage(), // <-- Add this line
+            new RNFirebaseMessagingPackage() ,
+            new RNFirebaseFunctionsPackage()
 
       );
     }
