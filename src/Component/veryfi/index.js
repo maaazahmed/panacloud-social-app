@@ -25,6 +25,7 @@ class VeryfiAccount extends Component {
         if (confirmCodeNumber.length) {
             confirmResult.confirm(confirmCodeNumber)
                 .then((user) => {
+                    
                     user._user.accountType = "User";
                     database.child(`user/${user._user.uid}`).set(user._user).then(() => {
                         database.child(`user/${user._user.uid}`).on("value", (snap) => {

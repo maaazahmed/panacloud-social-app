@@ -24,30 +24,22 @@ class CreateAccount extends Component {
       if (user) {
         database.child(`user/${user._user.uid}`).on("value", (snap) => {
           let currentUser = snap.val()
+          console.log(user._user)
           if (currentUser.accountType === "User") {
-            // firebase.messaging().getToken()
-            //   .then(fcmToken => {
-            //     if (fcmToken) {
-            //       database.child(`groupToken`).push({ fcmToken })
-            //       this.props.devicesToken(fcmToken)
-            //     } 
-            //   });
             this.props.navigation.navigate("UserDashboardMain")
+            console.log("-------------------", currentUser.accountType)
           }
           else if (currentUser.accountType === "admin") {
-            // firebase.messaging().getToken()
-            //   .then(fcmToken => {
-            //     if (fcmToken) {
-            //       database.child(`groupToken`).push({ fcmToken })
-            //     } else {
-            //     }
-            //   });
             this.props.navigation.navigate("Dashboard")
+            console.log("------------------- Dashboard", currentUser.accountType)
+
           }
-          console.log(currentUser)
           this.props.currentUserAction(currentUser)
         })
 
+      }
+
+      else {
       }
     })
 

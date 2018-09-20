@@ -26,6 +26,7 @@ class GroupList extends Component {
             messageVal: "",
             isInputError: false,
 
+
         }
     }
     closeDrawer = () => {
@@ -39,7 +40,7 @@ class GroupList extends Component {
         let { newGroupVal } = this.state;
         let groupObj = {
             newGroupVal,
-            isJoin:"JOIN"
+            isJoin: "JOIN"
         }
         if (newGroupVal !== "") {
             this.setState({
@@ -47,7 +48,9 @@ class GroupList extends Component {
                 newGroupVal: "",
                 isInputError: false
             })
-            database.child("Groups").push(groupObj)
+            database.child("Groups").push(groupObj).then((suc) => {
+                 console.log(suc,"Suc")
+            })
         }
         else {
             this.setState({
@@ -63,7 +66,7 @@ class GroupList extends Component {
             for (let key in obj) {
                 groupsArr.push({ ...obj[key], key })
             }
-            this.props.groupListAction(groupsArr,this.props.currentUser.currentUser)
+            this.props.groupListAction(groupsArr, this.props.currentUser.currentUser)
         })
     }
 
@@ -71,7 +74,7 @@ class GroupList extends Component {
     ViewGroup(groupData) {
         database.child("message").orderByChild('timestamp').on("value", (snap) => {
             let messOBJ = snap.val()
-            
+
             let messageArr = []
             for (let key in messOBJ) {
                 if (messOBJ[key].groupID === this.props.groupMessages.ViewGroup.key)
@@ -89,8 +92,6 @@ class GroupList extends Component {
 
 
     }
-
-
     sendMessage() {
         this.props.currentUser.currentUser.phoneNumber
         let messageObj = {
@@ -100,13 +101,43 @@ class GroupList extends Component {
             groupNaem: this.props.groupMessages.ViewGroup.newGroupVal,
             currentUserID: this.props.currentUser.currentUser.uid,
             timestamp: firebase.database.ServerValue.TIMESTAMP,
-           
         }
         if (messageObj.message !== "") {
             database.child("message").push(messageObj)
             this.setState({
-                messageVal:""
+                messageVal: ""
             })
+            database.child(`Groups/${messageObj.groupID}/groupToken`).on("value", snap => {
+                let groupTokenArr = []
+                let obj = snap.val()
+                for (let key in obj) {
+                    for (let key2 in obj[key]) {
+                        groupTokenArr.push(obj[key][key2])
+                    }
+                }
+                firebase.messaging().hasPermission()
+                    .then(enabled => {
+                        if (enabled) {
+                            var key = 'AAAAnfZgUo8:APA91bExL_IslF6cLR3bPb7uVSn6ALTTYVPkGpdKbI1ya5P5Z89bwXeV_TUyneOg4voDTpF9apIJpXg__NP4vBTjbxTSrg3C5FcILPHtZB828usMINOYC19LEW88D-d8QZ-xdkl-EsGc';
+                            fetch('https://fcm.googleapis.com/fcm/send', {
+                                'method': 'POST',
+                                'headers': {
+                                    'Authorization': 'key=' + key,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    notification: messageObj,
+                                    registration_ids: groupTokenArr
+                                })
+                            }).then(function (response) {
+                                console.log(response);
+                            }).catch(function (error) {
+                                console.error(error);
+                            })
+                        }
+                    });
+            })
+
         }
         else {
             alert("Please write")
