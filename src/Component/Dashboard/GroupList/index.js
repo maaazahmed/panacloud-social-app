@@ -128,7 +128,7 @@ class GroupList extends Component {
                                 body: JSON.stringify({
                                     notification: {
                                         title: messageObj.groupNaem,
-                                        body: `From ${messageObj.phoneNumber}`,
+                                        body: messageObj.phoneNumber,
                                         click_action : ""
                                     },
                                     registration_ids: groupTokenArr

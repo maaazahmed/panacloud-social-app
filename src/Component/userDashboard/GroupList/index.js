@@ -98,7 +98,7 @@ class GroupList extends Component {
                 messageVal: ""
             })
             database.child(`Groups/${messageObj.groupID}/groupToken`).on("value", snap => {
-                let groupTokenArr = []
+                let groupTokenArr = ["cBzKzOjNf0A:APA91bGvGs3XvuRXJOE99GNY7-pJNwpfbOGnObCMff3rPoLu2zK77IR5UzlT5pZxEoVCQikenJd5d2lG2RX0sp6cJGbvt5BzSxhlaZoWJsaZ1IPkHXHzKQ5-ng54sfnm3xrvI5aX8iP0"]
                 let obj = snap.val()
                 for (let key in obj) {
                     for (let key2 in obj[key]) {
@@ -113,7 +113,7 @@ class GroupList extends Component {
                                 'method': 'POST',
                                 'headers': {
                                     'Authorization': 'key=' + key,
-                                    'Content-Type': 'application/json'
+                                    'Content-Type': 'application/json',
                                 },
                                 body: JSON.stringify({
                                     notification: {
