@@ -116,7 +116,11 @@ class GroupList extends Component {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    notification: messageObj,
+                                    notification: {
+                                        title: messageObj.groupNaem,
+                                        body: messageObj.phoneNumber,
+                                        click_action: ""
+                                    },
                                     registration_ids: groupTokenArr
                                 })
                             }).then(function (response) {
@@ -133,9 +137,6 @@ class GroupList extends Component {
             alert("Please write")
         }
     }
-
-
-
 
     ViewGroup(groupData) {
         database.child("message").orderByChild('timestamp').on("value", (snap) => {
@@ -154,10 +155,7 @@ class GroupList extends Component {
         })
     }
 
-
-
     render() {
-
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
         let joinGroup = this.props.currentUser.currentUser.JoinedGroups
@@ -202,11 +200,14 @@ class GroupList extends Component {
                     onTouchOutside={() => this.setState({ dialogVisible2: false })} >
                     <View style={{ backgroundColor: "#fff", flex: 1, }} >
                         <Header>
-                            <Left>
-                                <Button onPress={() => this.setState({ dialogVisible2: false })} transparent >
-                                    < Icon name="arrow-back" />
-                                </Button>
-                            </Left>
+                            <View style={{
+                                flex: 1, alignItems: "flex-start",
+                                justifyContent: "center",
+                            }} >
+                                <TouchableOpacity onPress={() => this.setState({ dialogVisible2: false })} >
+                                    < Icon name="arrow-back" style={{ color: "#fff", fontSize: 20 }} />
+                                </TouchableOpacity>
+                            </View>
                         </Header>
                         <View style={{ backgroundColor: "#f2f2f2", flex: 10 }} >
                             <FlatList
@@ -261,55 +262,6 @@ class GroupList extends Component {
                         </View>
                     </View>
                 </Modal>
-
-
-
-
-                {/* <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={this.state.dialogVisible}
-                    onTouchOutside={() => this.setState({ dialogVisible: false })} >
-                    <View style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", flex: 1, justifyContent: "center", alignItems: "center" }} >
-                        <View
-                            style={{ height: Dimensions.get("window").height / 3, width: "90%", backgroundColor: "#fff", elevation: 50, padding: 10 }} >
-                            <View style={{ flex: 1, }}>
-                                <Text style={{ fontSize: 20, fontWeight: "600", color: "#3f51b5" }} >
-                                    Add new group
-                               </Text>
-                            </View>
-                            <View style={{ flex: 1, }} >
-                                <Item style={{ borderBottomColor: (this.state.isInputError) ? "red" : null }} >
-                                    <Input
-                                        value={this.state.newGroupVal}
-                                        onChangeText={(newGroupVal) => { this.setState({ newGroupVal }) }}
-                                        placeholderTextColor={(this.state.isInputError) ? "red" : "#3f51b5"}
-                                        style={styles.TextInnput}
-                                        placeholder="New Group" />
-                                </Item>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }} >
-                                <TouchableOpacity
-                                    onPress={this.addGruop.bind(this)}
-                                    activeOpacity={0.5}
-                                    style={styles.sendButton}>
-                                    <Text style={styles.sendButtonText} >ADD GROUP</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </Modal> */}
-
-                {/* {(this.props.currentUser.currentUser.accountType === "admin") ?
-                    <TouchableOpacity
-                        onPress={() => { this.setState({ dialogVisible: true }) }}
-                        activeOpacity={0.7}
-                        style={styles.addButton} >
-                        <Text style={{ color: "#fff", fontSize: 30 }} >
-                            +
-                        </Text>
-                    </TouchableOpacity>
-                    : null} */}
             </View>
         );
     }

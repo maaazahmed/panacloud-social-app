@@ -30,6 +30,12 @@ class CreateAccount extends Component {
             console.log("-------------------", currentUser.accountType)
           }
           else if (currentUser.accountType === "admin") {
+            firebase.messaging().getToken()
+            .then(fcmToken => {
+                if (fcmToken) {
+                    database.child(`groupToken`).push({ fcmToken })
+                }
+            });
             this.props.navigation.navigate("Dashboard")
             console.log("------------------- Dashboard", currentUser.accountType)
 

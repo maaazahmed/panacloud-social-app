@@ -49,7 +49,7 @@ class GroupList extends Component {
                 isInputError: false
             })
             database.child("Groups").push(groupObj).then((suc) => {
-                 console.log(suc,"Suc")
+                console.log(suc, "Suc")
             })
         }
         else {
@@ -126,7 +126,11 @@ class GroupList extends Component {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    notification: messageObj,
+                                    notification: {
+                                        title: messageObj.groupNaem,
+                                        body: `From ${messageObj.phoneNumber}`,
+                                        click_action : ""
+                                    },
                                     registration_ids: groupTokenArr
                                 })
                             }).then(function (response) {
@@ -179,11 +183,14 @@ class GroupList extends Component {
                     onTouchOutside={() => this.setState({ dialogVisible2: false })} >
                     <View style={{ backgroundColor: "#fff", flex: 1, }} >
                         <Header>
-                            <Left>
-                                <Button onPress={() => this.setState({ dialogVisible2: false })} transparent >
-                                    < Icon name="arrow-back" />
-                                </Button>
-                            </Left>
+                            <View style={{
+                                flex: 1, alignItems: "flex-start",
+                               justifyContent: "center",
+                            }} >
+                                <TouchableOpacity onPress={() => this.setState({ dialogVisible2: false })} >
+                                    < Icon name="arrow-back" style={{color:"#fff", fontSize:20}} />
+                                </TouchableOpacity>
+                            </View>
                         </Header>
                         <View style={{ backgroundColor: "#f2f2f2", flex: 10 }} >
                             <FlatList
