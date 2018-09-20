@@ -24,7 +24,7 @@ class GroupList extends Component {
             dialogVisible2: false,
             messageVal: "",
             isInputError: false,
-            isJoin:"Joine"
+            isJoin: "Joine"
 
         }
     }
@@ -65,7 +65,7 @@ class GroupList extends Component {
             this.props.groupListAction(groupsArr, this.props.currentUser.currentUser)
         })
 
-      
+
     }
     joinGroup(groupData) {
         let currentUser = this.props.currentUser.currentUser
@@ -74,28 +74,60 @@ class GroupList extends Component {
             currentUser,
             groupData,
         }
-        database.child(`invitations`).push(joinObj).then(()=>{
-          this.setState({
-        })
-        alert("Request submit")
+        database.child(`invitations`).push(joinObj).then(() => {
+            this.setState({
+            })
+            alert("Request submit")
         })
     }
 
 
     sendMessage() {
+        this.props.currentUser.currentUser.phoneNumber
         let messageObj = {
             groupID: this.props.groupMessages.ViewGroup.key,
             phoneNumber: this.props.currentUser.currentUser.phoneNumber,
             message: this.state.messageVal,
             groupNaem: this.props.groupMessages.ViewGroup.newGroupVal,
             currentUserID: this.props.currentUser.currentUser.uid,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
         }
         if (messageObj.message !== "") {
             database.child("message").push(messageObj)
             this.setState({
                 messageVal: ""
             })
+            database.child(`Groups/${messageObj.groupID}/groupToken`).on("value", snap => {
+                let groupTokenArr = []
+                let obj = snap.val()
+                for (let key in obj) {
+                    for (let key2 in obj[key]) {
+                        groupTokenArr.push(obj[key][key2])
+                    }
+                }
+                firebase.messaging().hasPermission()
+                    .then(enabled => {
+                        if (enabled) {
+                            var key = 'AAAAnfZgUo8:APA91bExL_IslF6cLR3bPb7uVSn6ALTTYVPkGpdKbI1ya5P5Z89bwXeV_TUyneOg4voDTpF9apIJpXg__NP4vBTjbxTSrg3C5FcILPHtZB828usMINOYC19LEW88D-d8QZ-xdkl-EsGc';
+                            fetch('https://fcm.googleapis.com/fcm/send', {
+                                'method': 'POST',
+                                'headers': {
+                                    'Authorization': 'key=' + key,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    notification: messageObj,
+                                    registration_ids: groupTokenArr
+                                })
+                            }).then(function (response) {
+                                console.log(response);
+                            }).catch(function (error) {
+                                console.error(error);
+                            })
+                        }
+                    });
+            })
+
         }
         else {
             alert("Please write")
@@ -104,7 +136,7 @@ class GroupList extends Component {
 
 
 
-    
+
     ViewGroup(groupData) {
         database.child("message").orderByChild('timestamp').on("value", (snap) => {
             let messOBJ = snap.val()
@@ -125,7 +157,7 @@ class GroupList extends Component {
 
 
     render() {
-        
+
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
         let joinGroup = this.props.currentUser.currentUser.JoinedGroups
@@ -338,7 +370,7 @@ const mapStateToProp = (state) => {
         currentUser: state.root,
         groupMessages: state.root,
         messages_list: state.root,
-        invitations:state.root,
+        invitations: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
@@ -352,7 +384,7 @@ const mapDispatchToProp = (dispatch) => {
         messageAction: (data) => {
             dispatch(messageAction(data))
         },
-        requestList:(data) => {
+        requestList: (data) => {
             dispatch(requestList(data))
         },
 
