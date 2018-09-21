@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Dimensions, AsyncStorage } from "react-native"
+import { View, StyleSheet, TouchableOpacity, Text, Dimensions, AsyncStorage, Modal } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
 import { connect } from "react-redux"
 import { signInAction, currentUserAction } from "../../store/action/action"
+import SplashScreen from "../splashScreen/index"
 
 
 const database = firebase.database().ref("/")
@@ -12,7 +13,8 @@ class CreateAccount extends Component {
     super()
     this.state = {
       phoneNumber: "",
-      message: " Enter Your Phone Number"
+      message: " Enter Your Phone Number",
+      modalVisbel: true
     }
   }
 
@@ -24,28 +26,33 @@ class CreateAccount extends Component {
       if (user) {
         database.child(`user/${user._user.uid}`).on("value", (snap) => {
           let currentUser = snap.val()
-          console.log(user._user)
           if (currentUser.accountType === "User") {
-            this.props.navigation.navigate("UserDashboardMain")
-            console.log("-------------------", currentUser.accountType)
+            setTimeout(() => {
+              this.setState({
+                modalVisbel: false
+              })
+              this.props.navigation.navigate("UserDashboardMain")
+            }, 3000)
+
           }
           else if (currentUser.accountType === "admin") {
             firebase.messaging().getToken()
-            .then(fcmToken => {
-                if (fcmToken) {
-                    database.child(`groupToken`).push({ fcmToken })
-                }
-            });
-            this.props.navigation.navigate("Dashboard")
-            console.log("------------------- Dashboard", currentUser.accountType)
-
+            setTimeout(() => {
+              this.setState({
+                modalVisbel: false
+              })
+              this.props.navigation.navigate("Dashboard")
+            }, 3000)
           }
           this.props.currentUserAction(currentUser)
         })
-
       }
-
       else {
+        setTimeout(() => {
+          this.setState({
+            modalVisbel: false
+          })
+        }, 4000)
       }
     })
 
@@ -70,35 +77,38 @@ class CreateAccount extends Component {
 
   render() {
     return (
-      <View style={styles.container} >
-        <View style={{}}  >
-          <Text style={{ fontSize: 22, color: "#3f51b5" }} >
-            {this.state.message}
-          </Text>
-        </View>
-        <View style={styles.FormContainer} >
-          <View style={styles.fomViwe} >
-            <Item>
-              <Input
-                value={this.state.phoneNumber}
-                onChangeText={(phoneNumber) => { this.setState({ phoneNumber }) }}
-                placeholderTextColor="#3f51b5"
-                keyboardType="phone-pad"
-                style={styles.TextInnput}
-                placeholder="Phone number" />
-            </Item>
+      this.state.modalVisbel ?
+        <SplashScreen />
+        :
+        <View style={styles.container} >
+          <View style={{}}  >
+            <Text style={{ fontSize: 22, color: "#3f51b5" }} >
+              {this.state.message}
+            </Text>
           </View>
-          <View style={styles.sendButtonView} >
-            <TouchableOpacity
-              onPress={this.signIn.bind(this)}
-              activeOpacity={0.5}
-              style={styles.sendButton}>
-              <Text style={styles.sendButtonText} >SEND</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={styles.FormContainer} >
+            <View style={styles.fomViwe} >
+              <Item>
+                <Input
+                  value={this.state.phoneNumber}
+                  onChangeText={(phoneNumber) => { this.setState({ phoneNumber }) }}
+                  placeholderTextColor="#3f51b5"
+                  keyboardType="phone-pad"
+                  style={styles.TextInnput}
+                  placeholder="Phone number" />
+              </Item>
+            </View>
+            <View style={styles.sendButtonView} >
+              <TouchableOpacity
+                onPress={this.signIn.bind(this)}
+                activeOpacity={0.5}
+                style={styles.sendButton}>
+                <Text style={styles.sendButtonText} >SEND</Text>
+              </TouchableOpacity>
+            </View>
 
+          </View>
         </View>
-      </View>
     );
   }
 }

@@ -18,7 +18,9 @@ export default class SplashScreen extends Component {
   render() {
     return (
      <View style={{flex:1, backgroundColor:"#3f51b5", justifyContent:"center", alignItems:"center"}} >
-        <Image source={require("./lifafah.png")} style={{height:200, width:200,}}  />
+        <Image 
+        resizeMode="contain"
+        source={require("./images/asdasd.png")} style={{height:150, width:150,}}  />
      </View>
         
     );
