@@ -137,7 +137,6 @@ class GroupList extends Component {
                         }
                     });
             })
-
         }
         else {
             alert("Please write")

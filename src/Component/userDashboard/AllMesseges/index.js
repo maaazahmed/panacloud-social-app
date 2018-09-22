@@ -6,14 +6,9 @@ import {
     FlatList,
     TouchableOpacity
 } from 'react-native';
-import {
-    Card,
-    CardItem,
-    Thumbnail,
-    Left,
-    Body,
-    Right,
-} from 'native-base';
+
+import { Card, CardItem, Thumbnail, Left, Body,  } from 'native-base';
+
 import { connect } from "react-redux"
 import { AllMessagesAction } from "../../../store/action/action"
 import firebase from "react-native-firebase"
@@ -58,9 +53,6 @@ class MessagesComponent extends Component {
         for (let key in JoinedGroups) {
             JoinedGroupsArr.push({ ...JoinedGroups[key], key })
         }
-        console.log(JoinedGroupsArr, "'''''''''''''''''''''")
-
-
         return (
             <View style={styles.container} >
                 <FlatList
@@ -68,30 +60,30 @@ class MessagesComponent extends Component {
                     data={Allmessages}
                     renderItem={({ item, index }) => {
                         for (let key in JoinedGroups) {
-                            console.log(JoinedGroups[key].groupID === item.groupID)
                             if (JoinedGroups[key].groupID === item.groupID) {
-                             return(
-                                <View key={index} style={{
-                                    backgroundColor: "#fff",
-                                    width: "100%",
-                                    minHeight: 100,
-                                    marginBottom: 1,
-                                    elevation: 5
-                                }}>
-                                    <View style={{ padding: 5, flexDirection: "row", justifyContent: "space-between", flex: 1 }} >
-                                        <Text style={{ fontSize: 15, color: "#3f51b5", fontWeight: "600" }}>{item.groupNaem}</Text>
-                                        <Text style={{ color: "#3f51b5" }}>{item.phoneNumber}</Text>
-                                    </View>
-                                    <View style={{ padding: 5, flexDirection: "row", justifyContent: "space-between", flex: 2, alignItems: "center" }} >
-                                        <Text style={{ color: "#3f51b5" }}>{item.message}</Text>
-                                    </View>
-                                </View>
+                                return (
+                                    <TouchableOpacity key={index} activeOpacity={0.5} >
+                                        <Card style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
+                                            <CardItem>
+                                                <Left>
+                                                    <Thumbnail
+                                                        source={{ uri: 'https://odesk-prod-portraits.s3.amazonaws.com/Users:masazahmed:PortraitUrl_100?AWSAccessKeyId=AKIAIKIUKM3HBSWUGCNQ&Expires=2147483647&Signature=I7I0ShoIpwfgZhjjAJgyGsOlJvo%3D&1532386522762000' }} />
+                                                    <Body>
+                                                        <Text style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.groupNaem}</Text>
+                                                        <Text note>{item.message.slice(0, 10)}...</Text>
+                                                    </Body>
+                                                </Left>
+                                            </CardItem>
+                                        </Card>
+                                    </TouchableOpacity>
                                 )
                             }
                         }
                     }
-                    } keyExtractor={(item) => { return item.key }} />
-            </View>
+                    } keyExtractor={(item) => {
+                        return item.key
+                    }} />
+            </View>  
         );
     }
 }
