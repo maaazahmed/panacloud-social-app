@@ -6,7 +6,6 @@ import {
     FlatList,
     TouchableOpacity,
     Modal,
-    Dimensions
 } from 'react-native';
 import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left } from 'native-base';
 import { connect } from "react-redux";
@@ -68,17 +67,25 @@ class GroupList extends Component {
 
     }
     joinGroup(groupData) {
-        let currentUser = this.props.currentUser.currentUser
-        groupData.idAdd = false;
-        let joinObj = {
-            currentUser,
-            groupData,
-        }
-        database.child(`invitations`).push(joinObj).then(() => {
-            this.setState({
-            })
-            alert("Request submit")
-        })
+        firebase.messaging().getToken()
+            .then(fcmToken => {
+                if (fcmToken) {
+                    let currentUser = this.props.currentUser.currentUser
+                    groupData.idAdd = false;
+                    let joinObj = {
+                        currentUser,
+                        groupData,
+                        fcmToken
+                    }
+                    database.child(`invitations`).push(joinObj).then(() => {
+                        this.setState({
+                        })
+                        alert("Request submit")
+                    })
+                }
+            });
+
+
     }
 
 
@@ -97,14 +104,17 @@ class GroupList extends Component {
             this.setState({
                 messageVal: ""
             })
+
             database.child(`Groups/${messageObj.groupID}/groupToken`).on("value", snap => {
-                let groupTokenArr = ["cBzKzOjNf0A:APA91bGvGs3XvuRXJOE99GNY7-pJNwpfbOGnObCMff3rPoLu2zK77IR5UzlT5pZxEoVCQikenJd5d2lG2RX0sp6cJGbvt5BzSxhlaZoWJsaZ1IPkHXHzKQ5-ng54sfnm3xrvI5aX8iP0"]
+                let groupTokenArr = []
                 let obj = snap.val()
                 for (let key in obj) {
                     for (let key2 in obj[key]) {
                         groupTokenArr.push(obj[key][key2])
                     }
                 }
+
+
                 firebase.messaging().hasPermission()
                     .then(enabled => {
                         if (enabled) {
@@ -123,10 +133,6 @@ class GroupList extends Component {
                                     },
                                     registration_ids: groupTokenArr
                                 })
-                            }).then(function (response) {
-                                console.log(response);
-                            }).catch(function (error) {
-                                console.error(error);
                             })
                         }
                     });

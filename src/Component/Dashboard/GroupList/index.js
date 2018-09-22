@@ -25,7 +25,7 @@ class GroupList extends Component {
             dialogVisible2: false,
             messageVal: "",
             isInputError: false,
-
+            fcmToken:""
 
         }
     }
@@ -37,10 +37,19 @@ class GroupList extends Component {
     };
 
     addGruop() {
+        firebase.messaging().getToken()
+        .then(fcmToken => {
+            if (fcmToken) {
+                this.setState({fcmToken:fcmToken})
+            }
+        });
+
+
         let { newGroupVal } = this.state;
         let groupObj = {
             newGroupVal,
-            isJoin: "JOIN"
+            isJoin: "JOIN",
+            adminfcmToken:this.state.fcmToken
         }
         if (newGroupVal !== "") {
             this.setState({

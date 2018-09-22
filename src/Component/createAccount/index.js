@@ -4,7 +4,7 @@ import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
 import { connect } from "react-redux"
 import { signInAction, currentUserAction } from "../../store/action/action"
-import SplashScreen from "../splashScreen/index"
+// import SplashScreen from "../splashScreen/index"
 
 
 const database = firebase.database().ref("/")
@@ -21,45 +21,49 @@ class CreateAccount extends Component {
 
 
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        database.child(`user/${user._user.uid}`).on("value", (snap) => {
-          let currentUser = snap.val()
-          if (currentUser.accountType === "User") {
-            setTimeout(() => {
-              this.setState({
-                modalVisbel: false
-              })
-              this.props.navigation.navigate("UserDashboardMain")
-            }, 3000)
+  // componentWillMount() {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       database.child(`user/${user._user.uid}`).on("value", (snap) => {
+  //         let currentUser = snap.val()
+  //         if(currentUser){
 
-          }
-          else if (currentUser.accountType === "admin") {
-            firebase.messaging().getToken()
-            setTimeout(() => {
-              this.setState({
-                modalVisbel: false
-              })
-              this.props.navigation.navigate("Dashboard")
-            }, 3000)
-          }
-          this.props.currentUserAction(currentUser)
-        })
-      }
-      else {
-        setTimeout(() => {
-          this.setState({
-            modalVisbel: false
-          })
-        }, 4000)
-      }
-    })
+  //           if (currentUser.accountType === "User") {
+  //             setTimeout(() => {
+  //               this.setState({
+  //               modalVisbel: false
+  //             })
+  //             this.props.navigation.navigate("UserDashboardMain")
+  //           }, 3000)
 
-    AsyncStorage.getItem("phoneNumber").then((value) => {
-      this.setState({ phoneNumber: value });
-    }).done();
-  }
+  //         }
+  //         else if (currentUser.accountType === "admin") {
+  //           firebase.messaging().getToken()
+  //           setTimeout(() => {
+  //             this.setState({
+  //               modalVisbel: false
+  //             })
+  //             this.props.navigation.navigate("Dashboard")
+  //           }, 3000)
+  //         }
+  //         this.props.currentUserAction(currentUser)
+          
+  //       }
+  //       })
+  //     }
+  //     else {
+  //       setTimeout(() => {
+  //         this.setState({
+  //           modalVisbel: false
+  //         })
+  //       }, 4000)
+  //     }
+  //   })
+
+  //   AsyncStorage.getItem("phoneNumber").then((value) => {
+  //     this.setState({ phoneNumber: value });
+  //   }).done();
+  // }
 
 
 
@@ -77,9 +81,6 @@ class CreateAccount extends Component {
 
   render() {
     return (
-      this.state.modalVisbel ?
-        <SplashScreen />
-        :
         <View style={styles.container} >
           <View style={{}}  >
             <Text style={{ fontSize: 22, color: "#3f51b5" }} >
