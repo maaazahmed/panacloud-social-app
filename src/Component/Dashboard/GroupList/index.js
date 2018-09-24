@@ -283,19 +283,19 @@ class GroupList extends Component {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center", padding: 5,
-                    borderColor:"#3f51b5",
-                    elevation:5,
-                    backgroundColor:"transparent",
-                    borderRadius:2,
-                    height:50
+                    borderColor: "#3f51b5",
+                    elevation: 5,
+                    backgroundColor: "transparent",
+                    borderRadius: 2,
+                    height: 50
                 }} >
                     <View style={{ flex: 1 }} >
                         <SearchInput
-                           style={{ backgroundColor:"#fff"}}
+                            style={{ backgroundColor: "#fff" }}
                             onChangeText={(groupList) => { this.searchUpdated(groupList) }}
-                            placeholder="Search"/>
+                            placeholder="Search" />
                     </View>
-                    <View style={{paddingRight:2}}>
+                    <View style={{ paddingRight: 2 }}>
                         <Icon name="search" style={{ color: "#3f51b5" }} />
                     </View>
                 </View>
@@ -398,9 +398,7 @@ class GroupList extends Component {
                                 </Button>
                             </View>
                         </View>
-
                     </View>
-
                 </Modal>
 
 
@@ -466,24 +464,39 @@ class GroupList extends Component {
                         <View style={{ height: Dimensions.get("window").height / 1.2, width: "95%", backgroundColor: "#fff" }} >
                             <FlatList data={members_Arr}
                                 renderItem={({ item, index }) => (
-                                    <TouchableOpacity activeOpacity={0.6}
-                                        onPress={this.finalAddadmin.bind(this, item)} >
-                                        <Card key={index} style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
-                                            <CardItem>
-                                                <Left>
-                                                    <Thumbnail
-                                                        source={{ uri: item.groupImg || "https://tse1.mm.bing.net/th?id=OIP.wbLH6MmOdiPwIi4fWjYmrAAAAA&pid=15.1&P=0&w=300&h=300" }} />
-                                                    <Body>
-                                                        <Text
-                                                            style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.phoneNumber}</Text>
-                                                    </Body>
-                                                </Left>
-                                            </CardItem>
-                                        </Card>
-                                    </TouchableOpacity>
+                                    (item.uid !== this.props.currentUser.currentUser.uid) ?
+                                        <TouchableOpacity activeOpacity={0.6}
+                                            onPress={this.finalAddadmin.bind(this, item)} >
+                                            <Card key={index} style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
+                                                <CardItem>
+                                                    <Left>
+                                                        <Thumbnail
+                                                            source={{ uri: item.groupImg || "https://tse1.mm.bing.net/th?id=OIP.wbLH6MmOdiPwIi4fWjYmrAAAAA&pid=15.1&P=0&w=300&h=300" }} />
+                                                        <Body>
+                                                            <Text
+                                                                style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.phoneNumber}</Text>
+                                                        </Body>
+                                                    </Left>
+                                                </CardItem>
+                                            </Card>
+                                        </TouchableOpacity>
+                                        :
+                                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                                            <Text style={{
+                                                fontSize: 25,
+                                                fontWeight: "bold"
+                                            }} >
+                                                No User
+                                             </Text>
+                                        </View>
                                 )} keyExtractor={(item) => {
                                     return item.key
                                 }} />
+                        </View>
+                        <View style={{height:60, justifyContent:"flex-start"}} >
+                          <TouchableOpacity onPress={()=>{this.setState({dialogVisible3:false})}} >
+                              <Text style={{color:"#3f51b5"}} >Cancele</Text>
+                          </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
