@@ -125,3 +125,12 @@ export const myGroupsAction = (data) => {
 }
 
 
+export const screenTitleAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.SCREEN_TITLE,
+            payload: data,
+        })
+    }
+}
+

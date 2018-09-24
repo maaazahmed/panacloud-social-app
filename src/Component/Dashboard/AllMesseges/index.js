@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Left, Body, Icon, Button, Title } from 'native-base';
 import { connect } from "react-redux"
-import { AllMessagesAction, viewMessages } from "../../../store/action/action"
+import { AllMessagesAction, viewMessages, screenTitleAction } from "../../../store/action/action"
 import firebase from "react-native-firebase"
 
 
@@ -46,8 +46,9 @@ class MessagesComponent extends Component {
             let newMessageListArr = messageListArr
             this.props.AllMessagesAction(newMessageListArr)
         })
+        this.props.screenTitleAction("Messages")
     }
-    
+
     viewMessee(data) {
         this.props.viewMessages(data)
         this.setState({
@@ -211,8 +212,11 @@ const mapDispatchToProp = (dispatch) => {
         AllMessagesAction: (data) => {
             dispatch(AllMessagesAction(data))
         },
-        viewMessages:(data) => {
+        viewMessages: (data) => {
             dispatch(viewMessages(data))
+        },
+        screenTitleAction: (data) => {
+            dispatch(screenTitleAction(data))
         },
     };
 };

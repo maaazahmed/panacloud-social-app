@@ -18,11 +18,11 @@ const Route = StackNavigator(
         SplashScreen: {
             screen: SplashScreen
         },
-        SubAdminDashboard: {
-            screen: SubAdminDashboard
-        },
         TestComonent: {
             screen: TestComonent
+        },
+        SubAdminDashboard: {
+            screen: SubAdminDashboard
         },
         CreateAccount: {
             screen: CreateAccount

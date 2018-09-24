@@ -12,17 +12,23 @@ import {
 import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, Content, Card, CardItem, Thumbnail, } from 'native-base';
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
-import { groupListAction, viewGroupAction, messageAction, getMemberAction } from "../../../store/action/action";
+import { groupListAction, viewGroupAction, messageAction, getMemberAction, screenTitleAction } from "../../../store/action/action";
 const ImagePicker = require('react-native-image-picker');
+import SearchInput, { createFilter } from 'react-native-search-filter';
 
 
 
+
+
+const KEYS_TO_FILTERS = ["newGroupVal"];
 const database = firebase.database().ref("/")
 class GroupList extends Component {
     constructor() {
         super()
         this.state = {
             count: 15,
+            searchTerm: '',
+
             dialogVisible: false,
             dialogVisible2: false,
             isInputError: false,
@@ -42,6 +48,11 @@ class GroupList extends Component {
         this.drawer._root.open()
     };
     // https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png
+
+
+    searchUpdated(term) {
+        this.setState({ searchTerm: term })
+    }
 
     selectPhotoTapped() {
         const options = {
@@ -154,6 +165,7 @@ class GroupList extends Component {
             }
             this.props.groupListAction(groupsArr, this.props.currentUser.currentUser)
         })
+        this.props.screenTitleAction("Groups")
     }
 
 
@@ -251,7 +263,7 @@ class GroupList extends Component {
             newAccountType: "sub_Admin",
         }
         database.child(`Groups/${View_Group.key}/Admins`).push(newAdminObj).then(() => {
-            database.child(`user/${ data.uid}/accountType`).set("sub_Admin")
+            database.child(`user/${data.uid}/accountType`).set("sub_Admin")
             this.setState({
                 dialogVisible3: false
             })
@@ -264,13 +276,34 @@ class GroupList extends Component {
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
         let members_Arr = this.props.members_Arr.groupMemeber;
+        const filteredEmails = groupList.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
         return (
             <View style={styles.container} >
+                <View style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center", padding: 5,
+                    borderColor:"#3f51b5",
+                    elevation:5,
+                    backgroundColor:"transparent",
+                    borderRadius:2,
+                    height:50
+                }} >
+                    <View style={{ flex: 1 }} >
+                        <SearchInput
+                           style={{ backgroundColor:"#fff"}}
+                            onChangeText={(groupList) => { this.searchUpdated(groupList) }}
+                            placeholder="Search"/>
+                    </View>
+                    <View style={{paddingRight:2}}>
+                        <Icon name="search" style={{ color: "#3f51b5" }} />
+                    </View>
+                </View>
                 <View style={styles.GroupListContainer} >
                     <List style={{ marginLeft: 0, backgroundColor: "#fff" }} >
                         <FlatList
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                            data={groupList}
+                            data={filteredEmails}
                             renderItem={({ item, index }) =>
                                 <Card key={index} style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
                                     <CardItem>
@@ -547,6 +580,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         getMemberAction: (data) => {
             dispatch(getMemberAction(data))
+        },
+        screenTitleAction: (data) => {
+            dispatch(screenTitleAction(data))
         },
     };
 };

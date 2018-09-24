@@ -16,7 +16,7 @@ import {
 } from 'native-base';
 import { connect } from "react-redux"
 import firebase from "react-native-firebase";
-import { requestList, groupListAction } from "../../../store/action/action"
+import { requestList, groupListAction, screenTitleAction } from "../../../store/action/action"
 
 
 
@@ -47,6 +47,7 @@ class RequestList extends Component {
             }
             this.props.requestList(requestListArr)
         })
+        this.props.screenTitleAction("Invitations")
     }
 
     rejectRequest(data, index) {
@@ -65,12 +66,12 @@ class RequestList extends Component {
         let request_list = this.props.request_list.requestList;
         let newRequestList = request_list.slice(0, index).concat(request_list.slice(index + 1));
         this.props.requestList(newRequestList)
-        
+
         let fcmToken = data.fcmToken
         database.child(`invitations/${data.key}`).remove()
         database.child(`Groups/${data.groupData.key}/members`).push(data.currentUser)
         database.child(`user/${data.currentUser.uid}/JoinedGroups`).push(JoinedGroup)
-        database.child(`Groups/${data.groupData.key}/groupToken`).push({fcmToken})
+        database.child(`Groups/${data.groupData.key}/groupToken`).push({ fcmToken })
     }
 
 
@@ -207,6 +208,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         groupListAction: (data) => {
             dispatch(groupListAction(data))
+        },
+        screenTitleAction: (data) => {
+            dispatch(screenTitleAction(data))
         },
     };
 };

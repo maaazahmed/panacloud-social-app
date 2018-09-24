@@ -14,16 +14,20 @@ import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, getMemberAction } from "../../../store/action/action";
 const ImagePicker = require('react-native-image-picker');
+import SearchInput, { createFilter } from 'react-native-search-filter';
 
 
 
 
+
+const KEYS_TO_FILTERS = ["newGroupVal"];
 const database = firebase.database().ref("/")
 class GroupList extends Component {
     constructor() {
         super()
         this.state = {
             count: 15,
+            searchTerm: '',
             dialogVisible: false,
             dialogVisible2: false,
             isInputError: false,
@@ -34,7 +38,7 @@ class GroupList extends Component {
             newGroupVal: "",
             groupImgUrl: "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png",
             messegeImgUrl: "",
-            isJoin:"Join"
+            isJoin: "Join"
         }
     }
     closeDrawer = () => {
@@ -43,7 +47,7 @@ class GroupList extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
-    
+
 
 
 
@@ -77,6 +81,9 @@ class GroupList extends Component {
     // }
 
 
+    searchUpdated(term) {
+        this.setState({ searchTerm: term })
+    }
 
     addGruop() {
         firebase.messaging().getToken()
@@ -278,18 +285,43 @@ class GroupList extends Component {
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
         let members_Arr = this.props.members_Arr.groupMemeber;
-        let joinGroup = this.props.currentUser.currentUser.JoinedGroups
+        let joinGroup = this.props.currentUser.currentUser.JoinedGroups;
+        const filteredEmails = groupList.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+
         let joinGroupArr = []
         for (let key in joinGroup) {
             joinGroupArr.push({ ...joinGroup[key], key })
         }
         return (
             <View style={styles.container} >
+               
+                <View style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: 5,
+                    borderColor: "#3f51b5",
+                    elevation: 5,
+                    backgroundColor: "transparent",
+                    borderRadius: 2,
+                    height: 50
+                }} >
+                    <View style={{ flex: 1 }} >
+                        <SearchInput
+                            style={{ backgroundColor: "#fff" }}
+                            onChangeText={(groupList) => { this.searchUpdated(groupList) }}
+                            placeholder="Search" />
+                    </View>
+                    <View style={{ paddingRight: 2 }}>
+                        <Icon name="search" style={{ color: "#3f51b5" }} />
+                    </View>
+                </View>
+
                 <View style={styles.GroupListContainer} >
                     <List style={{ marginLeft: 0, backgroundColor: "#fff" }} >
                         <FlatList
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                            data={groupList}
+                            data={filteredEmails}
                             renderItem={({ item, index }) =>
                                 <Card key={index} style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
                                     <CardItem>

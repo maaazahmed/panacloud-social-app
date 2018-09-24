@@ -8,7 +8,8 @@ const ActionTypes = {
    ALL_MESSAGE:"ALL_MESSAGE",
    VIEW_MESSEGE:"VIEW_MESSEGE",
    GET_MEMBER:"GET_MEMBER",
-   MY_GROUPS:"MY_GROUPS"
+   MY_GROUPS:"MY_GROUPS",
+   SCREEN_TITLE:"SCREEN_TITLE"
 }
 
 export default ActionTypes

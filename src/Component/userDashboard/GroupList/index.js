@@ -11,14 +11,20 @@ import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, C
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, requestList } from "../../../store/action/action";
+import SearchInput, { createFilter } from 'react-native-search-filter';
 
 
+
+
+
+const KEYS_TO_FILTERS = ["newGroupVal"];
 const database = firebase.database().ref("/")
 class GroupList extends Component {
     constructor() {
         super()
         this.state = {
             count: 15,
+            searchTerm: '',
             dialogVisible: false,
             dialogVisible2: false,
             messageVal: "",
@@ -86,6 +92,10 @@ class GroupList extends Component {
             });
     }
 
+
+    searchUpdated(term) {
+        this.setState({ searchTerm: term })
+    }
 
     sendMessage() {
         this.props.currentUser.currentUser.phoneNumber
@@ -161,13 +171,36 @@ class GroupList extends Component {
     render() {
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
-        let joinGroup = this.props.currentUser.currentUser.JoinedGroups
+        let joinGroup = this.props.currentUser.currentUser.JoinedGroups;
+        const filteredEmails = groupList.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+
         let joinGroupArr = []
         for (let key in joinGroup) {
             joinGroupArr.push({ ...joinGroup[key], key })
         }
         return (
             <View style={styles.container} >
+                <View style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: 5,
+                    borderColor: "#3f51b5",
+                    elevation: 5,
+                    backgroundColor: "transparent",
+                    borderRadius: 2,
+                    height: 50
+                }} >
+                    <View style={{ flex: 1 }} >
+                        <SearchInput
+                            style={{ backgroundColor: "#fff" }}
+                            onChangeText={(groupList) => { this.searchUpdated(groupList) }}
+                            placeholder="Search" />
+                    </View>
+                    <View style={{ paddingRight: 2 }}>
+                        <Icon name="search" style={{ color: "#3f51b5" }} />
+                    </View>
+                </View>
                 <View style={styles.GroupListContainer} >
                     <List style={{ marginLeft: 0, backgroundColor: "#fff" }} >
                         <FlatList
@@ -175,27 +208,27 @@ class GroupList extends Component {
                             data={groupList}
                             renderItem={({ item, index }) =>
                                 <Card style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
-                                <CardItem>
-                                    <Left>
-                                        <Thumbnail
-                                            source={{ uri: item.groupImg }} />
-                                        <Body>
-                                            <Text style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.newGroupVal}</Text>
-                                            {/* <Text note>{item.message.slice(0, 10)}...</Text> */}
-                                        </Body>
-                                    </Left>
-                                    <Right>
-                                        {joinGroupArr.find(e => e.groupID === item.key)
-                                            ? <Button onPress={this.ViewGroup.bind(this, item)} transparent>
-                                                <Text style={{ color: "#3f51b5" }} >View</Text>
-                                            </Button>
-                                            : <Button onPress={this.joinGroup.bind(this, item)} transparent>
-                                                <Text style={{ color: "#3f51b5" }} >{this.state.isJoin}</Text>
-                                            </Button>
-                                        }
-                                    </Right>
-                                </CardItem>
-                            </Card>
+                                    <CardItem>
+                                        <Left>
+                                            <Thumbnail
+                                                source={{ uri: item.groupImg }} />
+                                            <Body>
+                                                <Text style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.newGroupVal}</Text>
+                                                {/* <Text note>{item.message.slice(0, 10)}...</Text> */}
+                                            </Body>
+                                        </Left>
+                                        <Right>
+                                            {joinGroupArr.find(e => e.groupID === item.key)
+                                                ? <Button onPress={this.ViewGroup.bind(this, item)} transparent>
+                                                    <Text style={{ color: "#3f51b5" }} >View</Text>
+                                                </Button>
+                                                : <Button onPress={this.joinGroup.bind(this, item)} transparent>
+                                                    <Text style={{ color: "#3f51b5" }} >{this.state.isJoin}</Text>
+                                                </Button>
+                                            }
+                                        </Right>
+                                    </CardItem>
+                                </Card>
                             }
                             keyExtractor={(item) => {
                                 return item.key
@@ -212,7 +245,7 @@ class GroupList extends Component {
                             <View style={{
                                 flex: 1, alignItems: "center",
                                 justifyContent: "space-between",
-                                flexDirection:"row"
+                                flexDirection: "row"
                             }} >
                                 <TouchableOpacity onPress={() => this.setState({ dialogVisible2: false })} >
                                     < Icon name="arrow-back" style={{ color: "#fff", fontSize: 20 }} />

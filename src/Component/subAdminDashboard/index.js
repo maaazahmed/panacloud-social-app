@@ -7,7 +7,9 @@ import RequestList from "./RequestList"
 import SideBar from "../SideBar/index";
 import MessagesComponent from "./AllMesseges/index"
 import firebase from "react-native-firebase";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+import Icons from "react-native-vector-icons/FontAwesome"
+
 
 
 
@@ -15,11 +17,11 @@ const database = firebase.database().ref("/")
 
 
 class SubAdminDashboard extends Component {
-constructor(){
-    super()
-    this.state = {
+    constructor() {
+        super()
+        this.state = {
+        }
     }
-}
 
     closeDrawer = () => {
         this.drawer._root.close()
@@ -27,10 +29,6 @@ constructor(){
     openDrawer = () => {
         this.drawer._root.open()
     };
-
-
-    
-
     render() {
         return (
             <Drawer
@@ -59,23 +57,49 @@ constructor(){
 
 
 const Dashboard = createBottomTabNavigator({
-    Messages: { screen: MessagesComponent },
-    Group: { screen: GroupList },
-    Invitations: { screen: RequestList },
+    Messages: {
+        screen: MessagesComponent,
+        navigationOptions: {
+            tabBarIcon: () => <Icon
+                name="chatboxes"
+                style={{ color: "#fff" }} />
+        }
+    },
+    Group: {
+        screen: GroupList,
+        navigationOptions: {
+            tabBarIcon: () => <Icons
+                name="users"
+                size={20}
+                style={{ color: "#fff",  }} />
+        }
+    },
+    Invitations: {
+        screen: RequestList,
+        navigationOptions: {
+            tabBarIcon: () => <Icon
+                name="person-add"
+                style={{ color: "#fff" }} />
+        }
+    },
+
 },
     {
         tabBarOptions: {
+            showIcon: true,
+            showLabel: false,
             activeTintColor: '#3f51b5',
-            inactiveTintColor: "#fff",
-            activeBackgroundColor: "#fff",
+            inactiveTintColor: "#3f51b5",
+            activeBackgroundColor: "#3f51b5",
             style: {
                 backgroundColor: '#3f51b5',
             },
-            labelStyle: {
-                fontSize: 18,
-                alignContent: "flex-start",
-                paddingBottom: 10
-            },
+            
+            // labelStyle: {
+            //     fontSize: 18,
+            //     alignContent: "flex-start",
+            //     paddingBottom: 10
+            // },
         }
     }
 )
@@ -89,11 +113,7 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        // FeedbackAction: (data) => {
-        //     dispatch(FeedbackAction(data))
-        // },
+
     };
 };
-
-
 export default connect(mapStateToProp, mapDispatchToProp)(SubAdminDashboard)

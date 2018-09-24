@@ -10,7 +10,8 @@ const INITIAL_STATE = {
     messages: [],
     Allmessages: [],
     groupMemeber: [],
-    myGroups: []
+    myGroups: [],
+    screenTitle: "Messages"
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -65,8 +66,12 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 myGroups: action.payload
             })
+        case ActionTypes.SCREEN_TITLE:
+            return ({
+                ...state,
+                screenTitle: action.payload
+            })
         default:
             return state;
     }
 }
-// VIEW_GROUP
