@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Modal,
 } from 'react-native';
-import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left } from 'native-base';
+import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, Card, CardItem, Thumbnail } from 'native-base';
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, requestList } from "../../../store/action/action";
@@ -84,8 +84,6 @@ class GroupList extends Component {
                     })
                 }
             });
-
-
     }
 
 
@@ -176,11 +174,16 @@ class GroupList extends Component {
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
                             data={groupList}
                             renderItem={({ item, index }) =>
-                                <ListItem key={index} style={styles.ListItem} >
-                                    <Body>
-                                        <Text style={styles.GroupName} >{item.newGroupVal}</Text>
-                                        <Text note numberOfLines={1}>{index + 1}</Text>
-                                    </Body>
+                                <Card style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
+                                <CardItem>
+                                    <Left>
+                                        <Thumbnail
+                                            source={{ uri: item.groupImg }} />
+                                        <Body>
+                                            <Text style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.newGroupVal}</Text>
+                                            {/* <Text note>{item.message.slice(0, 10)}...</Text> */}
+                                        </Body>
+                                    </Left>
                                     <Right>
                                         {joinGroupArr.find(e => e.groupID === item.key)
                                             ? <Button onPress={this.ViewGroup.bind(this, item)} transparent>
@@ -191,7 +194,8 @@ class GroupList extends Component {
                                             </Button>
                                         }
                                     </Right>
-                                </ListItem>
+                                </CardItem>
+                            </Card>
                             }
                             keyExtractor={(item) => {
                                 return item.key
@@ -206,8 +210,9 @@ class GroupList extends Component {
                     <View style={{ backgroundColor: "#fff", flex: 1, }} >
                         <Header>
                             <View style={{
-                                flex: 1, alignItems: "flex-start",
-                                justifyContent: "center",
+                                flex: 1, alignItems: "center",
+                                justifyContent: "space-between",
+                                flexDirection:"row"
                             }} >
                                 <TouchableOpacity onPress={() => this.setState({ dialogVisible2: false })} >
                                     < Icon name="arrow-back" style={{ color: "#fff", fontSize: 20 }} />
@@ -221,8 +226,8 @@ class GroupList extends Component {
                                     (this.props.currentUser.currentUser.uid === item.currentUserID) ?
                                         <View style={{
                                             backgroundColor: "#fff",
-                                            minHeight: 40, width: "70%", margin: 5, borderRadius: 50,
-                                            padding: 10,
+                                            minHeight: 40, width: "70%", margin: 5, borderRadius: 10,
+                                            padding: 20,
                                             justifyContent: "center",
                                             alignSelf: "flex-end"
                                         }} >
@@ -231,8 +236,8 @@ class GroupList extends Component {
                                         :
                                         <View style={{
                                             backgroundColor: "#3f51b5",
-                                            minHeight: 40, minWidth: "70%", margin: 10, borderRadius: 50,
-                                            padding: 10,
+                                            minHeight: 40, minWidth: "70%", margin: 10, borderRadius: 10,
+                                            padding: 20,
                                             justifyContent: "center",
                                             alignSelf: "flex-start"
                                         }} >
@@ -242,7 +247,7 @@ class GroupList extends Component {
                                     return item.key
                                 }} />
                         </View>
-                        <View style={{
+                        {/* <View style={{
                             flex: 1,
                             backgroundColor: "#3f51b5",
                             flexDirection: "row", justifyContent: "space-between",
@@ -261,10 +266,10 @@ class GroupList extends Component {
                             </View>
                             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
                                 <Button transparent onPress={this.sendMessage.bind(this)} >
-                                    <Text style={{ color: "#fff" }}  >SEND</Text>
+                                    <Icon name="send" style={{color:"#fff", fontSize:30}} />
                                 </Button>
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                 </Modal>
             </View>

@@ -30,10 +30,10 @@ export const groupListAction = (data) => {
         //     for (let key in obj) {
         //         groupsArr.push({ ...obj[key], key })
         //     }
-            dispatch({
-                type: ActionTypes.GROUP_LIST,
-                payload: data
-            })
+        dispatch({
+            type: ActionTypes.GROUP_LIST,
+            payload: data
+        })
         // })
     }
 }
@@ -94,5 +94,27 @@ export const AllMessagesAction = (data) => {
     }
 }
 
+
+
+
+export const viewMessages = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.VIEW_MESSEGE,
+            payload: data,
+        })
+    }
+}
+
+
+
+export const getMemberAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.GET_MEMBER,
+            payload: data,
+        })
+    }
+}
 
 

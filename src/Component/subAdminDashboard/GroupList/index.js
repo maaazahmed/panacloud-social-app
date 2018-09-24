@@ -42,8 +42,7 @@ class GroupList extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
-    // https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png
-
+    
     selectPhotoTapped() {
         const options = {
             quality: 1.0,
@@ -84,67 +83,67 @@ class GroupList extends Component {
 
 
 
-    addGruop() {
-        firebase.messaging().getToken()
-            .then(fcmToken => {
-                if (fcmToken) {
-                    this.setState({ fcmToken: fcmToken })
-                }
-            });
-        let { newGroupVal, groupImgUrl } = this.state;
-        let groupObj = {
-            newGroupVal,
-            isJoin: "JOIN",
-            adminfcmToken: this.state.fcmToken
-        }
-        if (newGroupVal !== "" && groupImgUrl !== "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png") {
+    // addGruop() {
+    //     firebase.messaging().getToken()
+    //         .then(fcmToken => {
+    //             if (fcmToken) {
+    //                 this.setState({ fcmToken: fcmToken })
+    //             }
+    //         });
+    //     let { newGroupVal, groupImgUrl } = this.state;
+    //     let groupObj = {
+    //         newGroupVal,
+    //         isJoin: "JOIN",
+    //         adminfcmToken: this.state.fcmToken
+    //     }
+    //     if (newGroupVal !== "" && groupImgUrl !== "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png") {
 
-            this.setState({
-                isGroupAddLoader: false
-            })
+    //         this.setState({
+    //             isGroupAddLoader: false
+    //         })
 
-            const storageRef = firebase.storage().ref('/');
-            var file = this.state.groupImgUrl;
-            var metadata = {
-                contentType: 'image/jpeg'
-            };
-            var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-                function (snapshot) {
-                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    switch (snapshot.state) {
-                        case firebase.storage.TaskState.PAUSED:
-                            break;
-                        case firebase.storage.TaskState.RUNNING:
-                            break;
-                    }
-                }, function (error) {
-                    switch (error.code) {
-                        case 'storage/unauthorized':
-                            break;
-                        case 'storage/canceled':
-                            break;
-                        case 'storage/unknown':
-                            break;
-                    }
-                }, (snapshot) => {
-                    groupObj.groupImg = snapshot.downloadURL
-                    database.child("Groups").push(groupObj)
-                    this.setState({
-                        dialogVisible: false,
-                        isInputError: false,
-                        isGroupAddLoader: true,
-                        newGroupVal: "",
-                        groupImgUrl: "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png"
-                    })
-                });
-        }
-        else {
-            this.setState({
-                isInputError: true
-            })
-        }
-    }
+    //         const storageRef = firebase.storage().ref('/');
+    //         var file = this.state.groupImgUrl;
+    //         var metadata = {
+    //             contentType: 'image/jpeg'
+    //         };
+    //         var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
+    //         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    //             function (snapshot) {
+    //                 var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //                 switch (snapshot.state) {
+    //                     case firebase.storage.TaskState.PAUSED:
+    //                         break;
+    //                     case firebase.storage.TaskState.RUNNING:
+    //                         break;
+    //                 }
+    //             }, function (error) {
+    //                 switch (error.code) {
+    //                     case 'storage/unauthorized':
+    //                         break;
+    //                     case 'storage/canceled':
+    //                         break;
+    //                     case 'storage/unknown':
+    //                         break;
+    //                 }
+    //             }, (snapshot) => {
+    //                 groupObj.groupImg = snapshot.downloadURL
+    //                 database.child("Groups").push(groupObj)
+    //                 this.setState({
+    //                     dialogVisible: false,
+    //                     isInputError: false,
+    //                     isGroupAddLoader: true,
+    //                     newGroupVal: "",
+    //                     groupImgUrl: "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png"
+    //                 })
+    //             });
+    //     }
+    //     else {
+    //         this.setState({
+    //             isInputError: true
+    //         })
+    //     }
+    // }
 
     componentDidMount() {
         database.child("Groups").on("value", (snap) => {
@@ -253,7 +252,6 @@ class GroupList extends Component {
         }
         database.child(`Groups/${View_Group.key}/Admins`).push(newAdminObj).then(() => {
             database.child(`user/${ data.uid}/accountType`).set("sub_Admin")
-            // database.child(`user/${ data.uid}/newAcountType`).set("sub_Admin")
             this.setState({
                 dialogVisible3: false
             })
@@ -375,7 +373,7 @@ class GroupList extends Component {
 
 
 
-                <Modal
+                {/* <Modal
                     animationType="fade"
                     transparent={true}
                     visible={this.state.dialogVisible}
@@ -429,7 +427,7 @@ class GroupList extends Component {
                             </Card>
                         </View>
                     </View>
-                </Modal>
+                </Modal> */}
                 <Modal visible={this.state.dialogVisible3} transparent={true} animationType="fade" >
                     <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", justifyContent: "center", alignItems: "center" }} >
                         <View style={{ height: Dimensions.get("window").height / 1.2, width: "95%", backgroundColor: "#fff" }} >
@@ -462,16 +460,16 @@ class GroupList extends Component {
 
 
 
-                {(this.props.currentUser.currentUser.accountType === "admin") ?
-                    <TouchableOpacity
+                {/* {(this.props.currentUser.currentUser.accountType === "admin") ? */}
+                    {/* <TouchableOpacity
                         onPress={() => { this.setState({ dialogVisible: true }) }}
                         activeOpacity={0.7}
                         style={styles.addButton} >
                         <Text style={{ color: "#fff", fontSize: 30 }} >
                             +
                         </Text>
-                    </TouchableOpacity>
-                    : null}
+                    </TouchableOpacity> */}
+                    {/* : null} */}
             </View>
         );
     }

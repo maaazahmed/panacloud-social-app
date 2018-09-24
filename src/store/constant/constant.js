@@ -6,6 +6,8 @@ const ActionTypes = {
    VIEW_GROUP:"VIEW_GROUP",
    MESSAGE_LIST:"MESSAGE_LIST",
    ALL_MESSAGE:"ALL_MESSAGE",
+   VIEW_MESSEGE:"VIEW_MESSEGE",
+   GET_MEMBER:"GET_MEMBER"
 }
 
 export default ActionTypes

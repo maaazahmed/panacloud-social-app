@@ -4,24 +4,32 @@ import {
     Text,
     View,
     FlatList,
-    TouchableOpacity
+    TouchableOpacity,
+    Modal,
+    Animated,
+    Image
 } from 'react-native';
-
-import { Card, CardItem, Thumbnail, Left, Body,  } from 'native-base';
-
+import { Container, Header, Content, Card, CardItem, Thumbnail, Left, Body, Icon, Button, Title } from 'native-base';
 import { connect } from "react-redux"
-import { AllMessagesAction } from "../../../store/action/action"
+import { AllMessagesAction, viewMessages } from "../../../store/action/action"
 import firebase from "react-native-firebase"
 
 
 
-const database = firebase.database().ref("/")
 
+
+
+
+const database = firebase.database().ref("/")
+const HEADER_MAX_HEIGHT = 230;
+const HEADER_MIN_HEIGHT = 60;
+const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class MessagesComponent extends Component {
     constructor() {
         super()
         this.state = {
-            count: 15
+            count: 15,
+            modalVisible: false,
         }
     }
 
@@ -31,7 +39,6 @@ class MessagesComponent extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
-
 
 
     componentWillMount() {
@@ -46,7 +53,19 @@ class MessagesComponent extends Component {
         })
     }
 
+
+
+    viewMessee(data) {
+        this.props.viewMessages(data)
+        this.setState({
+            modalVisible: true
+        })
+    }
+
+
+
     render() {
+        let view_Message = this.props.view_Message.ViewMesesage
         let Allmessages = this.props.Allmessages.Allmessages
         let JoinedGroups = this.props.currentUser.currentUser.JoinedGroups
         let JoinedGroupsArr = []
@@ -62,12 +81,14 @@ class MessagesComponent extends Component {
                         for (let key in JoinedGroups) {
                             if (JoinedGroups[key].groupID === item.groupID) {
                                 return (
-                                    <TouchableOpacity key={index} activeOpacity={0.5} >
+                                    <TouchableOpacity
+                                        onPress={this.viewMessee.bind(this, item)}
+                                        key={index} activeOpacity={0.5} >
                                         <Card style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
                                             <CardItem>
                                                 <Left>
                                                     <Thumbnail
-                                                        source={{ uri: 'https://odesk-prod-portraits.s3.amazonaws.com/Users:masazahmed:PortraitUrl_100?AWSAccessKeyId=AKIAIKIUKM3HBSWUGCNQ&Expires=2147483647&Signature=I7I0ShoIpwfgZhjjAJgyGsOlJvo%3D&1532386522762000' }} />
+                                                        source={{ uri: item.groupImg }} />
                                                     <Body>
                                                         <Text style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.groupNaem}</Text>
                                                         <Text note>{item.message.slice(0, 10)}...</Text>
@@ -79,11 +100,52 @@ class MessagesComponent extends Component {
                                 )
                             }
                         }
-                    }
-                    } keyExtractor={(item) => {
+                    }} keyExtractor={(item) => {
                         return item.key
                     }} />
-            </View>  
+                <View>
+                    <Modal
+                        animationType={"fade"}
+                        visible={this.state.modalVisible} >
+                        <Container>
+                            <Header>
+                                <Left>
+                                    <Button onPress={() => {
+                                        this.setState({
+                                            modalVisible: false
+                                        })
+                                    }} transparent>
+                                        <Icon name='arrow-back' />
+                                    </Button>
+                                </Left>
+                                <Body>
+                                    <Title>{view_Message.groupNaem}</Title>
+                                </Body>
+                            </Header>
+                            <Content>
+                                <Card style={{ flex: 0, marginTop: 0, elevation: 0, minHeight: "100%" }}>
+                                    <CardItem>
+                                        <Left>
+                                            <Body>
+                                                <Text  style={{fontSize:20, fontWeight:"bold", color:"#3f51b5"}} >{view_Message.groupNaem}</Text>
+                                            </Body>
+                                        </Left>
+                                    </CardItem>
+                                    <CardItem>
+                                        <Body>
+                                            <Image source={{ uri: view_Message.groupImg }} style={{ height: 200, width: "100%", flex: 1 }} />
+                                            <Text style={{ marginTop: 10 }}>
+                                                {view_Message.message}
+                                            </Text>
+                                        </Body>
+                                    </CardItem>
+                                </Card>
+                            </Content>
+                        </Container>
+                    </Modal>
+                </View>
+
+            </View>
         );
     }
 }
@@ -148,6 +210,54 @@ const styles = StyleSheet.create({
     aprovText: {
         color: "#fff"
     },
+
+
+    fill: {
+        flex: 1,
+    },
+    categoryGridComponent: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        margin: 0,
+        marginTop: HEADER_MAX_HEIGHT
+    },
+
+    ImageBackground: {
+        height: "90%",
+        height: "90%",
+        justifyContent: "flex-start",
+        margin: "3%",
+    },
+
+
+    header: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: '#00bcd4',
+        overflow: 'hidden',
+        elevation: 0.5,
+    },
+    title: {
+        backgroundColor: 'transparent',
+        color: 'white',
+        fontSize: 18,
+    },
+    scrollViewContent: {
+        marginTop: HEADER_MAX_HEIGHT,
+    },
+    backgroundImage: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        width: null,
+        height: HEADER_MAX_HEIGHT,
+        resizeMode: 'cover',
+    },
+
 });
 
 
@@ -158,12 +268,16 @@ const mapStateToProp = (state) => {
     return ({
         Allmessages: state.root,
         currentUser: state.root,
+        view_Message: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
     return {
         AllMessagesAction: (data) => {
             dispatch(AllMessagesAction(data))
+        },
+        viewMessages: (data) => {
+            dispatch(viewMessages(data))
         },
     };
 };

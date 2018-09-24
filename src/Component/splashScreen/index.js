@@ -21,23 +21,30 @@ class SplashScreen extends Component {
             if (currentUser.accountType === "User") {
               setTimeout(() => {
                 this.props.navigation.navigate("UserDashboardMain")
-              }, 4000)
+              }, 2000)
+              this.props.currentUserAction(currentUser)
             }
             else if (currentUser.accountType === "admin") {
               firebase.messaging().getToken()
               setTimeout(() => {
                 this.props.navigation.navigate("Dashboard")
-              }, 4000)
-
+              }, 2000)
+              this.props.currentUserAction(currentUser)
             }
-            this.props.currentUserAction(currentUser)
+            else if (currentUser.accountType === "sub_Admin") {
+              firebase.messaging().getToken()
+              setTimeout(() => {
+                this.props.navigation.navigate("SubAdminDashboard")
+              }, 2000)
+              this.props.currentUserAction(currentUser)
+            }
           }
         })
       }
       else {
         setTimeout(() => {
           this.props.navigation.navigate("CreateAccount")
-        }, 4000)
+        }, 2000)
       }
     })
   }

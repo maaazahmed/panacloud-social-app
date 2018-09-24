@@ -7,7 +7,9 @@ const INITIAL_STATE = {
     requestList: [],
     ViewGroup: {},
     messages: [],
-    Allmessages: []
+    Allmessages: [],
+    groupMemeber:[],
+    ViewMesesage:{}
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -47,7 +49,18 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 Allmessages: action.payload
             })
+            case ActionTypes.VIEW_MESSEGE:
+            return ({
+                ...state,
+                ViewMesesage: action.payload
+            })
+            case ActionTypes.GET_MEMBER:
+            return ({
+                ...state,
+                groupMemeber: action.payload
+            })
         default:
             return state;
     }
 }
+// VIEW_GROUP
