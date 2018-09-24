@@ -481,12 +481,13 @@ class GroupList extends Component {
                                             </Card>
                                         </TouchableOpacity>
                                         :
-                                        <View style={{ height:"100%", justifyContent: "center", alignItems: "center" }} >
+                                        <View style={{ height: "100%", justifyContent: "center", alignItems: "center" }} >
                                             <Text style={{
-                                                fontSize: 25,
+                                                fontSize: 20,
                                                 fontWeight: "bold",
-                                                alignContent:"center",
-                                                alignSelf:"center"
+                                                marginTop:"20%",
+                                                color: "#3f51b5"
+                                                
                                             }} >
                                                 No User
                                              </Text>
@@ -494,11 +495,11 @@ class GroupList extends Component {
                                 )} keyExtractor={(item) => {
                                     return item.key
                                 }} />
-                        <View style={{height:60, justifyContent:"center", alignItems:"flex-end"}} >
-                          <TouchableOpacity onPress={()=>{this.setState({dialogVisible3:false})}} >
-                              <Text style={{color:"#3f51b5"}} >Cancele</Text>
-                          </TouchableOpacity>
-                        </View>
+                            <View style={{ height: 60, justifyContent: "flex-end", alignItems: "center" }} >
+                                <TouchableOpacity onPress={() => { this.setState({ dialogVisible3: false }) }} >
+                                    <Text style={{ color: "#3f51b5", margin: 10 }} >Cancele</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Modal>
