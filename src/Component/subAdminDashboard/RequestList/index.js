@@ -16,7 +16,7 @@ import {
 } from 'native-base';
 import { connect } from "react-redux"
 import firebase from "react-native-firebase";
-import { requestList, groupListAction } from "../../../store/action/action"
+import { requestList, groupListAction, myGroupsAction } from "../../../store/action/action"
 
 
 
@@ -47,6 +47,13 @@ class RequestList extends Component {
             }
             this.props.requestList(requestListArr)
         })
+
+        let JoinedGroups = this.props.currentUser.currentUser.JoinedGroups
+        let JoinedGroupsArr = []
+        for (let key in JoinedGroups) {
+            JoinedGroupsArr.push({ ...JoinedGroups[key], key })
+        }
+        this.props.myGroupsAction(JoinedGroupsArr)
     }
 
     rejectRequest(data, index) {
@@ -65,62 +72,73 @@ class RequestList extends Component {
         let request_list = this.props.request_list.requestList;
         let newRequestList = request_list.slice(0, index).concat(request_list.slice(index + 1));
         this.props.requestList(newRequestList)
-        
+
         let fcmToken = data.fcmToken
         database.child(`invitations/${data.key}`).remove()
         database.child(`Groups/${data.groupData.key}/members`).push(data.currentUser)
         database.child(`user/${data.currentUser.uid}/JoinedGroups`).push(JoinedGroup)
-        database.child(`Groups/${data.groupData.key}/groupToken`).push({fcmToken})
+        database.child(`Groups/${data.groupData.key}/groupToken`).push({ fcmToken })
     }
 
 
 
     render() {
         let request_list = this.props.request_list.requestList;
+        let myGroups = this.props.myGroups.myGroups
+        console.log(myGroups)
+
         return (
             <View>
                 <View style={styles.GroupListContainer} >
                     <FlatList
                         onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
                         data={request_list}
-                        renderItem={({ item, index }) =>
-                            <Card key={index} style={styles.Card}>
-                                <CardItem>
-                                    <Left>
-                                        <Thumbnail source={{ uri: "data:image/png;base64,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" }} />
-                                        <Body>
-                                            <Text>{item.groupData.newGroupVal}</Text>
-                                            <Text note>{
-                                                item.currentUser.phoneNumber}</Text>
-                                        </Body>
-                                    </Left>
-                                    <Right>
-                                        <Body>
-                                            <View style={styles.CardButtun} >
-                                                <TouchableOpacity
-                                                    onPress={this.rejectRequest.bind(this, item, index)}
-                                                    activeOpacity={0.8} style={styles.rejectButt}>
-                                                    <Text style={styles.rejectText}>
-                                                        Reject
+                        renderItem={({ item, index }) => {
+                            let a = myGroups.filter((b) => {
+                                if (b.groupID === item.groupData.key) {
+                                    return b
+                                }
+                            })
+                            if (a.length) {
+                                return (
+                                    <Card key={index} style={styles.Card}>
+                                        <CardItem>
+                                            <Left>
+                                                <Thumbnail source={{ uri: "data:image/png;base64,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" }} />
+                                                <Body>
+                                                    <Text>{item.groupData.newGroupVal}</Text>
+                                                    <Text note>{
+                                                        item.currentUser.phoneNumber}</Text>
+                                                </Body>
+                                            </Left>
+                                            <Right>
+                                                <Body>
+                                                    <View style={styles.CardButtun} >
+                                                        <TouchableOpacity
+                                                            onPress={this.rejectRequest.bind(this, item, index)}
+                                                            activeOpacity={0.8} style={styles.rejectButt}>
+                                                            <Text style={styles.rejectText}>
+                                                                Reject
                                                     </Text>
-                                                </TouchableOpacity>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            activeOpacity={0.8}
+                                                            onPress={this.apprroveRequest.bind(this, item, index)}
+                                                            style={styles.aprovButt} >
+                                                            <Text style={styles.aprovText} >
+                                                                Approve
+                                                    </Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </Body>
+                                            </Right>
+                                        </CardItem>
+                                    </Card>)
+                            }
 
-                                                <TouchableOpacity
-                                                    activeOpacity={0.8}
-                                                    onPress={this.apprroveRequest.bind(this, item, index)}
-                                                    style={styles.aprovButt} >
-                                                    <Text style={styles.aprovText} >
-                                                        Approve
-                                                    </Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </Body>
-                                    </Right>
-                                </CardItem>
-                            </Card>
+                        }
                         }
                         keyExtractor={(item) => {
-                            console.log(item)
                             return item.key
                         }} />
                 </View>
@@ -197,7 +215,8 @@ const styles = StyleSheet.create({
 const mapStateToProp = (state) => {
     return ({
         request_list: state.root,
-        currentUser: state.root
+        currentUser: state.root,
+        myGroups: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
@@ -207,6 +226,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         groupListAction: (data) => {
             dispatch(groupListAction(data))
+        },
+        myGroupsAction: (data) => {
+            dispatch(myGroupsAction(data))
         },
     };
 };

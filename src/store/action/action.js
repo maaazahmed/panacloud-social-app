@@ -24,12 +24,6 @@ export const signInAction = (data, props) => {
 
 export const groupListAction = (data) => {
     return dispatch => {
-        // database.child("Groups").on("value", (snap) => {
-        //     let groupsArr = []
-        //     let obj = snap.val();
-        //     for (let key in obj) {
-        //         groupsArr.push({ ...obj[key], key })
-        //     }
         dispatch({
             type: ActionTypes.GROUP_LIST,
             payload: data
@@ -112,6 +106,19 @@ export const getMemberAction = (data) => {
     return dispatch => {
         dispatch({
             type: ActionTypes.GET_MEMBER,
+            payload: data,
+        })
+    }
+}
+
+
+
+
+
+export const myGroupsAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MY_GROUPS,
             payload: data,
         })
     }

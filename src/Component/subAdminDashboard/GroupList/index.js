@@ -13,9 +13,9 @@ import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, C
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, getMemberAction } from "../../../store/action/action";
-// import { Container, Header,  Text, Button, Icon, Left, Body } from 'native-base';
 const ImagePicker = require('react-native-image-picker');
-// import { ImagePicker } from "react-native-image-picker"
+
+
 
 
 const database = firebase.database().ref("/")
@@ -33,7 +33,8 @@ class GroupList extends Component {
             fcmToken: "",
             newGroupVal: "",
             groupImgUrl: "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png",
-            messegeImgUrl: ""
+            messegeImgUrl: "",
+            isJoin:"Join"
         }
     }
     closeDrawer = () => {
@@ -43,107 +44,101 @@ class GroupList extends Component {
         this.drawer._root.open()
     };
     
-    selectPhotoTapped() {
-        const options = {
-            quality: 1.0,
-            maxWidth: 500,
-            maxHeight: 500,
-            storageOptions: {
-                skipBackup: true
-            }
-        };
-
-        ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled photo picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
-            else {
-                let source = { uri: response.uri };
-                // console.log(source.uri)
-                this.setState({
-                    groupImgUrl: source.uri
-                })
-            }
-        });
-    }
 
 
 
+    // selectPhotoTapped() {
+    //     const options = {
+    //         quality: 1.0,
+    //         maxWidth: 500,
+    //         maxHeight: 500,
+    //         storageOptions: {
+    //             skipBackup: true
+    //         }
+    //     };
 
-
-
-
-
-
-
-
-    // addGruop() {
-    //     firebase.messaging().getToken()
-    //         .then(fcmToken => {
-    //             if (fcmToken) {
-    //                 this.setState({ fcmToken: fcmToken })
-    //             }
-    //         });
-    //     let { newGroupVal, groupImgUrl } = this.state;
-    //     let groupObj = {
-    //         newGroupVal,
-    //         isJoin: "JOIN",
-    //         adminfcmToken: this.state.fcmToken
-    //     }
-    //     if (newGroupVal !== "" && groupImgUrl !== "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png") {
-
-    //         this.setState({
-    //             isGroupAddLoader: false
-    //         })
-
-    //         const storageRef = firebase.storage().ref('/');
-    //         var file = this.state.groupImgUrl;
-    //         var metadata = {
-    //             contentType: 'image/jpeg'
-    //         };
-    //         var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
-    //         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    //             function (snapshot) {
-    //                 var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //                 switch (snapshot.state) {
-    //                     case firebase.storage.TaskState.PAUSED:
-    //                         break;
-    //                     case firebase.storage.TaskState.RUNNING:
-    //                         break;
-    //                 }
-    //             }, function (error) {
-    //                 switch (error.code) {
-    //                     case 'storage/unauthorized':
-    //                         break;
-    //                     case 'storage/canceled':
-    //                         break;
-    //                     case 'storage/unknown':
-    //                         break;
-    //                 }
-    //             }, (snapshot) => {
-    //                 groupObj.groupImg = snapshot.downloadURL
-    //                 database.child("Groups").push(groupObj)
-    //                 this.setState({
-    //                     dialogVisible: false,
-    //                     isInputError: false,
-    //                     isGroupAddLoader: true,
-    //                     newGroupVal: "",
-    //                     groupImgUrl: "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png"
-    //                 })
-    //             });
-    //     }
-    //     else {
-    //         this.setState({
-    //             isInputError: true
-    //         })
-    //     }
+    //     ImagePicker.showImagePicker(options, (response) => {
+    //         if (response.didCancel) {
+    //             console.log('User cancelled photo picker');
+    //         }
+    //         else if (response.error) {
+    //             console.log('ImagePicker Error: ', response.error);
+    //         }
+    //         else if (response.customButton) {
+    //             console.log('User tapped custom button: ', response.customButton);
+    //         }
+    //         else {
+    //             let source = { uri: response.uri };
+    //             this.setState({
+    //                 groupImgUrl: source.uri
+    //             })
+    //         }
+    //     });
     // }
+
+
+
+    addGruop() {
+        firebase.messaging().getToken()
+            .then(fcmToken => {
+                if (fcmToken) {
+                    this.setState({ fcmToken: fcmToken })
+                }
+            });
+        let { newGroupVal, groupImgUrl } = this.state;
+        let groupObj = {
+            newGroupVal,
+            isJoin: "JOIN",
+            adminfcmToken: this.state.fcmToken
+        }
+        if (newGroupVal !== "" && groupImgUrl !== "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png") {
+
+            this.setState({
+                isGroupAddLoader: false
+            })
+
+            const storageRef = firebase.storage().ref('/');
+            var file = this.state.groupImgUrl;
+            var metadata = {
+                contentType: 'image/jpeg'
+            };
+            var uploadTask = storageRef.child('images/' + Date.now()).put(file, metadata);
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                function (snapshot) {
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED:
+                            break;
+                        case firebase.storage.TaskState.RUNNING:
+                            break;
+                    }
+                }, function (error) {
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            break;
+                        case 'storage/canceled':
+                            break;
+                        case 'storage/unknown':
+                            break;
+                    }
+                }, (snapshot) => {
+                    groupObj.groupImg = snapshot.downloadURL
+                    database.child("Groups").push(groupObj)
+                    this.setState({
+                        dialogVisible: false,
+                        isInputError: false,
+                        isGroupAddLoader: true,
+                        newGroupVal: "",
+                        groupImgUrl: "https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png"
+                    })
+                });
+        }
+        else {
+            this.setState({
+                isInputError: true
+            })
+        }
+    }
 
     componentDidMount() {
         database.child("Groups").on("value", (snap) => {
@@ -154,6 +149,25 @@ class GroupList extends Component {
             }
             this.props.groupListAction(groupsArr, this.props.currentUser.currentUser)
         })
+    }
+    joinGroup(groupData) {
+        firebase.messaging().getToken()
+            .then(fcmToken => {
+                if (fcmToken) {
+                    let currentUser = this.props.currentUser.currentUser
+                    groupData.idAdd = false;
+                    let joinObj = {
+                        currentUser,
+                        groupData,
+                        fcmToken
+                    }
+                    database.child(`invitations`).push(joinObj).then(() => {
+                        this.setState({
+                        })
+                        alert("Request submit")
+                    })
+                }
+            });
     }
 
 
@@ -251,7 +265,7 @@ class GroupList extends Component {
             newAccountType: "sub_Admin",
         }
         database.child(`Groups/${View_Group.key}/Admins`).push(newAdminObj).then(() => {
-            database.child(`user/${ data.uid}/accountType`).set("sub_Admin")
+            database.child(`user/${data.uid}/accountType`).set("sub_Admin")
             this.setState({
                 dialogVisible3: false
             })
@@ -264,6 +278,11 @@ class GroupList extends Component {
         let groupList = this.props.groupList.groupList;
         let messages_list = this.props.messages_list.messages;
         let members_Arr = this.props.members_Arr.groupMemeber;
+        let joinGroup = this.props.currentUser.currentUser.JoinedGroups
+        let joinGroupArr = []
+        for (let key in joinGroup) {
+            joinGroupArr.push({ ...joinGroup[key], key })
+        }
         return (
             <View style={styles.container} >
                 <View style={styles.GroupListContainer} >
@@ -282,9 +301,14 @@ class GroupList extends Component {
                                             </Body>
                                         </Left>
                                         <Right>
-                                            <Button onPress={this.ViewGroup.bind(this, item)} transparent>
-                                                <Text style={{ color: "#3f51b5" }} >View</Text>
-                                            </Button>
+                                            {joinGroupArr.find(e => e.groupID === item.key)
+                                                ? <Button onPress={this.ViewGroup.bind(this, item)} transparent>
+                                                    <Text style={{ color: "#3f51b5" }} >View</Text>
+                                                </Button>
+                                                : <Button onPress={this.joinGroup.bind(this, item)} transparent>
+                                                    <Text style={{ color: "#3f51b5" }} >{this.state.isJoin}</Text>
+                                                </Button>
+                                            }
                                         </Right>
                                     </CardItem>
                                 </Card>
@@ -461,7 +485,7 @@ class GroupList extends Component {
 
 
                 {/* {(this.props.currentUser.currentUser.accountType === "admin") ? */}
-                    {/* <TouchableOpacity
+                {/* <TouchableOpacity
                         onPress={() => { this.setState({ dialogVisible: true }) }}
                         activeOpacity={0.7}
                         style={styles.addButton} >
@@ -469,7 +493,7 @@ class GroupList extends Component {
                             +
                         </Text>
                     </TouchableOpacity> */}
-                    {/* : null} */}
+                {/* : null} */}
             </View>
         );
     }

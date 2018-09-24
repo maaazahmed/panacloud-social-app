@@ -23,7 +23,7 @@ class GroupList extends Component {
             dialogVisible2: false,
             messageVal: "",
             isInputError: false,
-            isJoin: "Joine"
+            isJoin: "Join"
 
         }
     }

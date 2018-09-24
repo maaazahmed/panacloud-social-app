@@ -2,14 +2,15 @@ import ActionTypes from '../constant/constant';
 
 const INITIAL_STATE = {
     confirmResult: {},
-    groupList: [],
     currentUser: {},
-    requestList: [],
     ViewGroup: {},
+    ViewMesesage: {},
+    groupList: [],
+    requestList: [],
     messages: [],
     Allmessages: [],
-    groupMemeber:[],
-    ViewMesesage:{}
+    groupMemeber: [],
+    myGroups: []
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -49,15 +50,20 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 Allmessages: action.payload
             })
-            case ActionTypes.VIEW_MESSEGE:
+        case ActionTypes.VIEW_MESSEGE:
             return ({
                 ...state,
                 ViewMesesage: action.payload
             })
-            case ActionTypes.GET_MEMBER:
+        case ActionTypes.GET_MEMBER:
             return ({
                 ...state,
                 groupMemeber: action.payload
+            })
+        case ActionTypes.MY_GROUPS:
+            return ({
+                ...state,
+                myGroups: action.payload
             })
         default:
             return state;

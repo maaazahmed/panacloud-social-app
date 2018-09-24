@@ -13,9 +13,8 @@ import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, C
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, getMemberAction } from "../../../store/action/action";
-// import { Container, Header,  Text, Button, Icon, Left, Body } from 'native-base';
 const ImagePicker = require('react-native-image-picker');
-// import { ImagePicker } from "react-native-image-picker"
+
 
 
 const database = firebase.database().ref("/")
@@ -253,7 +252,6 @@ class GroupList extends Component {
         }
         database.child(`Groups/${View_Group.key}/Admins`).push(newAdminObj).then(() => {
             database.child(`user/${ data.uid}/accountType`).set("sub_Admin")
-            // database.child(`user/${ data.uid}/newAcountType`).set("sub_Admin")
             this.setState({
                 dialogVisible3: false
             })
