@@ -205,7 +205,7 @@ class GroupList extends Component {
                     <List style={{ marginLeft: 0, backgroundColor: "#fff" }} >
                         <FlatList
                             onScroll={() => { this.setState({ count: this.state.count + 3 }) }}
-                            data={groupList}
+                            data={filteredEmails}
                             renderItem={({ item, index }) =>
                                 <Card style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
                                     <CardItem>

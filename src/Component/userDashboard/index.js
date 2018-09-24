@@ -63,7 +63,7 @@ const Dashboard = createBottomTabNavigator({
         screen: MessagesComponent,
         navigationOptions: {
             tabBarIcon: () => <Icon
-                name="person-add"
+                name="chatboxes"
                 style={{ color: "#fff" }} />
         }
     },
