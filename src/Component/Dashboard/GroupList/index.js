@@ -481,10 +481,12 @@ class GroupList extends Component {
                                             </Card>
                                         </TouchableOpacity>
                                         :
-                                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                                        <View style={{ height:"100%", justifyContent: "center", alignItems: "center" }} >
                                             <Text style={{
                                                 fontSize: 25,
-                                                fontWeight: "bold"
+                                                fontWeight: "bold",
+                                                alignContent:"center",
+                                                alignSelf:"center"
                                             }} >
                                                 No User
                                              </Text>
@@ -492,11 +494,11 @@ class GroupList extends Component {
                                 )} keyExtractor={(item) => {
                                     return item.key
                                 }} />
-                        </View>
-                        <View style={{height:60, justifyContent:"flex-start"}} >
+                        <View style={{height:60, justifyContent:"center", alignItems:"flex-end"}} >
                           <TouchableOpacity onPress={()=>{this.setState({dialogVisible3:false})}} >
                               <Text style={{color:"#3f51b5"}} >Cancele</Text>
                           </TouchableOpacity>
+                        </View>
                         </View>
                     </View>
                 </Modal>
