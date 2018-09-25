@@ -47,40 +47,6 @@ class GroupList extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
-
-
-
-
-    // selectPhotoTapped() {
-    //     const options = {
-    //         quality: 1.0,
-    //         maxWidth: 500,
-    //         maxHeight: 500,
-    //         storageOptions: {
-    //             skipBackup: true
-    //         }
-    //     };
-
-    //     ImagePicker.showImagePicker(options, (response) => {
-    //         if (response.didCancel) {
-    //             console.log('User cancelled photo picker');
-    //         }
-    //         else if (response.error) {
-    //             console.log('ImagePicker Error: ', response.error);
-    //         }
-    //         else if (response.customButton) {
-    //             console.log('User tapped custom button: ', response.customButton);
-    //         }
-    //         else {
-    //             let source = { uri: response.uri };
-    //             this.setState({
-    //                 groupImgUrl: source.uri
-    //             })
-    //         }
-    //     });
-    // }
-
-
     searchUpdated(term) {
         this.setState({ searchTerm: term })
     }
@@ -294,7 +260,7 @@ class GroupList extends Component {
         }
         return (
             <View style={styles.container} >
-               
+
                 <View style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
@@ -421,111 +387,52 @@ class GroupList extends Component {
                                 </Button>
                             </View>
                         </View>
-
                     </View>
-
                 </Modal>
-
-
-
-
-                {/* <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={this.state.dialogVisible}
-                    onTouchOutside={() => this.setState({ dialogVisible: false })} >
-                    <View style={{ backgroundColor: "rgba(0, 0, 0, 0.8)", flex: 1, justifyContent: "center", alignItems: "center" }} >
-                        <View style={{ height: Dimensions.get("window").height / 1.5, width: "95%" }} >
-                            <Card style={{ flex: 1, margin: 0, marginTop: 0 }}>
-                                <CardItem style={{}}>
-                                    <Body style={{ minHeight: "55%", margin: 0 }}>
-                                        <TouchableOpacity
-                                            onPress={this.selectPhotoTapped.bind(this)}
-                                            activeOpacity={0.8} style={{
-                                                backgroundColor: "#fff",
-                                                flex: 1, height: "100%",
-                                                width: "100%",
-                                                borderColor: "#f2f2f2",
-                                                borderWidth: 1,
-                                                borderStyle: "dashed"
-                                            }} >
-                                            <Image
-                                                resizeMode="cover"
-                                                source={{ uri: this.state.groupImgUrl }}
-                                                style={{ height: "100%", width: "100%", }} />
-                                        </TouchableOpacity>
-                                    </Body>
-                                </CardItem>
-                                <CardItem>
-                                    <View style={{ flex: 1, }} >
-                                        <Item style={{ borderBottomColor: (this.state.isInputError) ? "red" : null }} >
-                                            <Input
-                                                value={this.state.newGroupVal}
-                                                onChangeText={(newGroupVal) => { this.setState({ newGroupVal }) }}
-                                                placeholderTextColor={(this.state.isInputError) ? "red" : "#3f51b5"}
-                                                style={styles.TextInnput}
-                                                placeholder="New Group" />
-                                        </Item>
-                                    </View>
-                                </CardItem>
-                                <CardItem>
-                                    {(this.state.isGroupAddLoader) ?
-                                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }} >
-                                            <TouchableOpacity
-                                                onPress={this.addGruop.bind(this)}
-                                                activeOpacity={0.5}
-                                                style={styles.sendButton}>
-                                                <Text style={styles.sendButtonText} >ADD GROUP</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        : null}
-                                </CardItem>
-                            </Card>
-                        </View>
-                    </View>
-                </Modal> */}
                 <Modal visible={this.state.dialogVisible3} transparent={true} animationType="fade" >
                     <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", justifyContent: "center", alignItems: "center" }} >
                         <View style={{ height: Dimensions.get("window").height / 1.2, width: "95%", backgroundColor: "#fff" }} >
                             <FlatList data={members_Arr}
                                 renderItem={({ item, index }) => (
-                                    <TouchableOpacity activeOpacity={0.6}
-                                        onPress={this.finalAddadmin.bind(this, item)} >
-                                        <Card key={index} style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
-                                            <CardItem>
-                                                <Left>
-                                                    <Thumbnail
-                                                        source={{ uri: item.groupImg || "https://tse1.mm.bing.net/th?id=OIP.wbLH6MmOdiPwIi4fWjYmrAAAAA&pid=15.1&P=0&w=300&h=300" }} />
-                                                    <Body>
-                                                        <Text
-                                                            style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.phoneNumber}</Text>
-                                                    </Body>
-                                                </Left>
-                                            </CardItem>
-                                        </Card>
-                                    </TouchableOpacity>
+                                    (item.uid !== this.props.currentUser.currentUser.uid) ?
+                                        <TouchableOpacity activeOpacity={0.6}
+                                            onPress={this.finalAddadmin.bind(this, item)} >
+                                            <Card key={index} style={{ elevation: 0, marginTop: 0, marginBottom: 0 }} >
+                                                <CardItem>
+                                                    <Left>
+                                                        <Thumbnail
+                                                            source={{ uri: item.groupImg || "https://tse1.mm.bing.net/th?id=OIP.wbLH6MmOdiPwIi4fWjYmrAAAAA&pid=15.1&P=0&w=300&h=300" }} />
+                                                        <Body>
+                                                            <Text
+                                                                style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.phoneNumber}</Text>
+                                                        </Body>
+                                                    </Left>
+                                                </CardItem>
+                                            </Card>
+                                        </TouchableOpacity>
+                                        :
+                                        <View style={{ height: "100%", justifyContent: "center", alignItems: "center" }} >
+                                            <Text style={{
+                                                fontSize: 20,
+                                                fontWeight: "bold",
+                                                marginTop: "20%",
+                                                color: "#3f51b5"
+
+                                            }} >
+                                                No User
+                                         </Text>
+                                        </View>
                                 )} keyExtractor={(item) => {
                                     return item.key
                                 }} />
+                            <View style={{ height: 60, justifyContent: "flex-end", alignItems: "center" }} >
+                                <TouchableOpacity onPress={() => { this.setState({ dialogVisible3: false }) }} >
+                                    <Text style={{ color: "#3f51b5", margin: 10 }} >Cancele</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Modal>
-
-
-
-
-
-
-                {/* {(this.props.currentUser.currentUser.accountType === "admin") ? */}
-                {/* <TouchableOpacity
-                        onPress={() => { this.setState({ dialogVisible: true }) }}
-                        activeOpacity={0.7}
-                        style={styles.addButton} >
-                        <Text style={{ color: "#fff", fontSize: 30 }} >
-                            +
-                        </Text>
-                    </TouchableOpacity> */}
-                {/* : null} */}
             </View>
         );
     }
