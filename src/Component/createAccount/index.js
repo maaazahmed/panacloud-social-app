@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Dimensions, AsyncStorage, Modal } from "react-native"
+import { View, StyleSheet, TouchableOpacity, Text, Dimensions, AsyncStorage } from "react-native"
 import { Item, Input, } from 'native-base';
 import firebase from "react-native-firebase"
 import { connect } from "react-redux"
-import { signInAction, currentUserAction } from "../../store/action/action"
-// import SplashScreen from "../splashScreen/index"
+import { signInAction, currentUserAction } from "../../store/action/action";;
 
 
 const database = firebase.database().ref("/")
@@ -17,54 +16,6 @@ class CreateAccount extends Component {
       modalVisbel: true
     }
   }
-
-
-
-
-  // componentWillMount() {
-  //   firebase.auth().onAuthStateChanged((user) => {
-  //     if (user) {
-  //       database.child(`user/${user._user.uid}`).on("value", (snap) => {
-  //         let currentUser = snap.val()
-  //         if(currentUser){
-
-  //           if (currentUser.accountType === "User") {
-  //             setTimeout(() => {
-  //               this.setState({
-  //               modalVisbel: false
-  //             })
-  //             this.props.navigation.navigate("UserDashboardMain")
-  //           }, 3000)
-
-  //         }
-  //         else if (currentUser.accountType === "admin") {
-  //           firebase.messaging().getToken()
-  //           setTimeout(() => {
-  //             this.setState({
-  //               modalVisbel: false
-  //             })
-  //             this.props.navigation.navigate("Dashboard")
-  //           }, 3000)
-  //         }
-  //         this.props.currentUserAction(currentUser)
-          
-  //       }
-  //       })
-  //     }
-  //     else {
-  //       setTimeout(() => {
-  //         this.setState({
-  //           modalVisbel: false
-  //         })
-  //       }, 4000)
-  //     }
-  //   })
-
-  //   AsyncStorage.getItem("phoneNumber").then((value) => {
-  //     this.setState({ phoneNumber: value });
-  //   }).done();
-  // }
-
 
 
   signIn() {

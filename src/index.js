@@ -6,7 +6,6 @@ import {
     DashboardMain,
     UserDashboardMain,
     SplashScreen,
-    TestComonent,
     SubAdminDashboard
 } from "./Component/index";
 import { StackNavigator } from "react-navigation"
@@ -17,9 +16,6 @@ const Route = StackNavigator(
     {
         SplashScreen: {
             screen: SplashScreen
-        },
-        TestComonent: {
-            screen: TestComonent
         },
         SubAdminDashboard: {
             screen: SubAdminDashboard

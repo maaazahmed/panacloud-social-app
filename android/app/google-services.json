@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "678443373199-slfigg3g82srvatocjoffhet6r4s2ilt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clintapp",
+            "certificate_hash": "c08d98e3cd48c98963684004d4e907b81ca9e3d7"
+          }
+        },
+        {
           "client_id": "678443373199-l6sa2l5upfu557flubq0t582p202qk9u.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678443373199-l6sa2l5upfu557flubq0t582p202qk9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
