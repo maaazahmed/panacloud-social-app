@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Modal,
 } from 'react-native';
-import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, Card, CardItem, Thumbnail } from 'native-base';
+import { List, Body, Right, Button, Header, Icon, Left, Card, CardItem, Thumbnail } from 'native-base';
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, requestList } from "../../../store/action/action";
@@ -214,7 +214,6 @@ class GroupList extends Component {
                                                 source={{ uri: item.groupImg }} />
                                             <Body>
                                                 <Text style={{ fontWeight: "bold", color: "#3f51b5" }}>{item.newGroupVal}</Text>
-                                                {/* <Text note>{item.message.slice(0, 10)}...</Text> */}
                                             </Body>
                                         </Left>
                                         <Right>
@@ -280,29 +279,6 @@ class GroupList extends Component {
                                     return item.key
                                 }} />
                         </View>
-                        {/* <View style={{
-                            flex: 1,
-                            backgroundColor: "#3f51b5",
-                            flexDirection: "row", justifyContent: "space-between",
-                            alignItems: "center",
-                            padding: 2
-                        }} >
-                            <View style={{ flex: 6 }} >
-                                <Item>
-                                    <Input
-                                        value={this.state.messageVal}
-                                        placeholderTextColor="#fff"
-                                        style={{ color: "#fff" }}
-                                        onChangeText={(messageVal) => { this.setState({ messageVal }) }}
-                                        placeholder="Type Message" />
-                                </Item>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-                                <Button transparent onPress={this.sendMessage.bind(this)} >
-                                    <Icon name="send" style={{color:"#fff", fontSize:30}} />
-                                </Button>
-                            </View>
-                        </View> */}
                     </View>
                 </Modal>
             </View>

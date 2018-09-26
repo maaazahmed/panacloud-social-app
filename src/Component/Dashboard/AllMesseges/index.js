@@ -6,7 +6,6 @@ import {
     FlatList,
     TouchableOpacity,
     Modal,
-
     Image
 } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Left, Body, Icon, Button, Title } from 'native-base';
@@ -17,7 +16,6 @@ import firebase from "react-native-firebase"
 
 
 const database = firebase.database().ref("/")
-
 class MessagesComponent extends Component {
     constructor() {
         super()
@@ -33,9 +31,6 @@ class MessagesComponent extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
-
-
-
     componentWillMount() {
         database.child("message").orderByChild('timestamp').on("value", (snap) => {
             let obj = snap.val()
@@ -128,7 +123,6 @@ class MessagesComponent extends Component {
                         </Container>
                     </Modal>
                 </View>
-
             </View>
         );
     }

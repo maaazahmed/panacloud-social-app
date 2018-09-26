@@ -1,18 +1,13 @@
 import React, { Component } from "react"
-import { TouchableOpacity, View, Text } from "react-native"
+import { TouchableOpacity, View,  } from "react-native"
 import { createBottomTabNavigator } from "react-navigation"
-import { Drawer, Header, Body, Icon, Title } from "native-base"
+import { Drawer, Header, Body, Icon,  } from "native-base"
 import GroupList from "./GroupList/index"
 import RequestList from "./RequestList"
 import SideBar from "../SideBar/index";
 import MessagesComponent from "./AllMesseges/index"
-import firebase from "react-native-firebase";
 import { connect } from "react-redux"
 import Icons from "react-native-vector-icons/FontAwesome"
-
-
-
-const database = firebase.database().ref("/")
 
 
 class DashboardMain extends Component {
@@ -110,15 +105,10 @@ const Dashboard = createBottomTabNavigator({
 const mapStateToProp = (state) => {
     return ({
         currentUserData: state.root,
-        // screenTitle:state.root
     });
 };
 const mapDispatchToProp = (dispatch) => {
-    return {
-        // FeedbackAction: (data) => {
-        //     dispatch(FeedbackAction(data))
-        // },
-    };
+    return {};
 };
 
 

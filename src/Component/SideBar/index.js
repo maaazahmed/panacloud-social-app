@@ -18,9 +18,6 @@ class SideBar extends Component {
                         firebase.auth().signOut().then(() => {
                             this.props.navigation.navigate("CreateAccount")
                         }) }}>
-                        {/* <Text style={{ fontSize: 20, fontWeight: "bold" }} >
-                            SIGN OUT
-                        </Text> */}
                     </TouchableOpacity>
                 </View>
             </View>

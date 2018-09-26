@@ -9,7 +9,7 @@ import {
     Dimensions,
     Image
 } from 'react-native';
-import { List, ListItem, Body, Right, Button, Item, Input, Header, Icon, Left, Content, Card, CardItem, Thumbnail, } from 'native-base';
+import { List, Body, Right, Button, Item, Input, Header, Icon, Left, Card, CardItem, Thumbnail, } from 'native-base';
 import { connect } from "react-redux";
 import firebase from "react-native-firebase";
 import { groupListAction, viewGroupAction, messageAction, getMemberAction, screenTitleAction } from "../../../store/action/action";
@@ -47,7 +47,6 @@ class GroupList extends Component {
     openDrawer = () => {
         this.drawer._root.open()
     };
-    // https://coloradocustomfloors.com/wp-content/uploads/2017/05/gallery_icon_new.png
 
 
     searchUpdated(term) {
@@ -65,35 +64,17 @@ class GroupList extends Component {
         };
 
         ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled photo picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
+            if (response.didCancel) {}
+            else if (response.error){}
+            else if (response.customButton){}
             else {
                 let source = { uri: response.uri };
-                // console.log(source.uri)
                 this.setState({
                     groupImgUrl: source.uri
                 })
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
     addGruop() {
         firebase.messaging().getToken()
             .then(fcmToken => {
@@ -245,7 +226,6 @@ class GroupList extends Component {
             alert("Please write")
         }
     }
-
 
     addSubAdmin() {
         this.setState({
@@ -400,10 +380,6 @@ class GroupList extends Component {
                         </View>
                     </View>
                 </Modal>
-
-
-
-
                 <Modal
                     animationType="fade"
                     transparent={true}
@@ -485,9 +461,9 @@ class GroupList extends Component {
                                             <Text style={{
                                                 fontSize: 20,
                                                 fontWeight: "bold",
-                                                marginTop:"20%",
+                                                marginTop: "20%",
                                                 color: "#3f51b5"
-                                                
+
                                             }} >
                                                 No User
                                              </Text>
@@ -503,12 +479,6 @@ class GroupList extends Component {
                         </View>
                     </View>
                 </Modal>
-
-
-
-
-
-
                 {(this.props.currentUser.currentUser.accountType === "admin") ?
                     <TouchableOpacity
                         onPress={() => { this.setState({ dialogVisible: true }) }}

@@ -21,9 +21,6 @@ import firebase from "react-native-firebase"
 
 
 const database = firebase.database().ref("/")
-const HEADER_MAX_HEIGHT = 230;
-const HEADER_MIN_HEIGHT = 60;
-const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 class MessagesComponent extends Component {
     constructor() {
         super()

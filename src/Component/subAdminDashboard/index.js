@@ -6,14 +6,10 @@ import GroupList from "./GroupList/index"
 import RequestList from "./RequestList"
 import SideBar from "../SideBar/index";
 import MessagesComponent from "./AllMesseges/index"
-import firebase from "react-native-firebase";
 import { connect } from "react-redux";
 import Icons from "react-native-vector-icons/FontAwesome"
 
 
-
-
-const database = firebase.database().ref("/")
 
 
 class SubAdminDashboard extends Component {
@@ -94,12 +90,6 @@ const Dashboard = createBottomTabNavigator({
             style: {
                 backgroundColor: '#3f51b5',
             },
-            
-            // labelStyle: {
-            //     fontSize: 18,
-            //     alignContent: "flex-start",
-            //     paddingBottom: 10
-            // },
         }
     }
 )
